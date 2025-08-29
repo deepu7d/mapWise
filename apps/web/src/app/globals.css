@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.leaflet-tooltip-arrow {
+  display: none;
+}
