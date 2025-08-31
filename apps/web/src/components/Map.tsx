@@ -51,7 +51,7 @@ const FriendsMap = ({ users, destination }: FriendsMapProps) => {
         const duration = durations[user.id]; // Get the duration from state
         const distance = distances[user.id] / 1000;
 
-        if (!user.position) return <h1>Fetching user position</h1>; // todo
+        if (!user.position) return; // todo
 
         return (
           <React.Fragment key={user.id}>

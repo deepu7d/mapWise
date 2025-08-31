@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "@repo/types": "workspace:*",
     "@turf/turf": "^7.2.0",
+    "axios": "^1.11.0",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet-routing-machine": "^3.2.12",
@@ -21,8 +23,7 @@
     "react-dom": "19.1.0",
     "react-leaflet": "^5.0.0",
     "react-redux": "^9.2.0",
-    "socket.io-client": "^4.8.1",
-    "@repo/types": "workspace:*"
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -1,3 +1,5 @@
+import { Position } from "@repo/types";
+
 // Haversine formula to calculate distance between two lat/lon points
 export const calculateDistance = (
   pos1: [number, number],
@@ -30,4 +32,19 @@ export const formatDuration = (seconds: number): string => {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
   return `${hours} hr ${remainingMinutes} min`;
+};
+
+export const getCurrentLocation = (): Promise<Position> => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        resolve([latitude, longitude]);
+      },
+      (error) => {
+        reject(error);
+      },
+      { enableHighAccuracy: false }
+    );
+  });
 };

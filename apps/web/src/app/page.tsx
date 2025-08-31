@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import RoomForm from "@/components/RoomForm";
 import { useRouter } from "next/navigation";
-import { nanoid } from "nanoid";
 import { Destination } from "@/types";
 import { cookieName } from "@/helper/constant";
+import axios from "axios";
+import { Position, sessionData } from "@repo/types";
+import { getCurrentLocation } from "@/helper/helperFunctions";
+
+const API_BASE_URL = "http://localhost:8000";
 
 type formData = {
   name: string;
@@ -18,28 +22,43 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleFormSubmit = (data: formData) => {
-    setIsLoading(true);
+  const handleFormSubmit = async (data: formData) => {
+    // setIsLoading(true);
+
+    const userPosition = await getCurrentLocation();
+
     if (isAdmin) {
-      const roomId = nanoid(6);
-      localStorage.setItem(
-        cookieName,
-        JSON.stringify({
-          name: data.name,
-          destination: data.destination,
-        })
+      const response = await axios.post(
+        `${API_BASE_URL}/api/room/create-room`,
+        {
+          username: data.name,
+          destination: {
+            name: data.destination?.name,
+            position: data.destination?.position,
+          },
+          userPosition: userPosition,
+        }
       );
-      router.push(`/playground/${roomId}`);
+      if (!response) console.log("ERROR CREATING ROOM");
+      const sessionData: sessionData = response.data;
+
+      sessionStorage.setItem("session-cookie", JSON.stringify(sessionData));
+      router.push(`playground/${sessionData.roomId}`);
     } else {
-      localStorage.setItem(
-        cookieName,
-        JSON.stringify({
-          name: data.name,
-        })
+      const response = await axios.post(
+        `${API_BASE_URL}/api/room/join/${data.roomId}`,
+        {
+          username: data.name,
+          position: userPosition,
+        }
       );
-      router.push(`/playground/${data.roomId}`);
+      if (!response) console.log("ERROR CREATING ROOM");
+      console.log(response);
+      const sessionData: sessionData = response.data;
+      sessionStorage.setItem("session-cookie", JSON.stringify(sessionData));
+      router.push(`playground/${sessionData.roomId}`);
     }
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   return (

@@ -6,19 +6,23 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.14.0",
+    "@repo/types": "workspace:*",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.1",
-    "socket.io": "^4.7.5",
-    "@repo/types" : "workspace:*"
+    "express": "^5.1.0",
+    "socket.io": "^4.7.5"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
     "@types/node": "^24.3.0",
     "@types/socket.io": "^3.0.2",
     "nodemon": "^3.0.1",

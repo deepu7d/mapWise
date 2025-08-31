@@ -1,17 +1,20 @@
 import useSocket from "@/hooks/useSocket";
 import { SendHorizontal } from "lucide-react";
 import React, { FormEvent, useEffect, useState } from "react";
-import { Message } from "@repo/types";
+import { Message, sessionData } from "@repo/types";
+import { Socket } from "socket.io-client";
 
-const ChatSection = ({ socket }: any) => {
+const ChatSection = ({
+  socket,
+  sessionData,
+}: {
+  socket: Socket;
+  sessionData: sessionData;
+}) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const mySocketId = localStorage.getItem("socketId") || "";
-  const name = JSON.parse(localStorage.getItem("roomData") || "{}").name;
   useEffect(() => {
     if (!socket) return;
-    console.log(socket);
     const handleReceiveMessage = (data: Message) => {
-      console.log("message receive from the server", data);
       setMessages((prev) => [...prev, data]);
     };
     socket.on("receive-message", handleReceiveMessage);
@@ -29,18 +32,22 @@ const ChatSection = ({ socket }: any) => {
     setMessages((prev) => [
       ...prev,
       {
-        id: socket.id,
-        name: name,
+        userId: sessionData.userId,
+        username: sessionData.username,
         content: message.toString(),
       },
     ]);
 
-    socket?.emit("send-message", message);
+    socket?.emit("send-message", {
+      content: message,
+      userId: sessionData.userId,
+      username: sessionData.username,
+    });
     event.currentTarget.reset();
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-slate-100 shadow-lg rounded-2xl lg:w-[70%]">
+    <div className="flex flex-col h-full w-full bg-slate-100 shadow-lg rounded-2xl">
       {/* heading */}
       <div className="py-2 px-4 border-b border-gray-200">
         <h1 className="text-md font-semibold text-gray-800">Chat Here</h1>
@@ -52,15 +59,17 @@ const ChatSection = ({ socket }: any) => {
           <div
             key={Math.random()}
             className={`flex flex-col ${
-              message.id == mySocketId ? "items-end" : "items-start"
+              message.userId == sessionData.userId ? "items-end" : "items-start"
             }`}
           >
             <h1 className="text-xs">
-              {message.name == name ? "You" : message.name}
+              {message.username == sessionData.username
+                ? "You"
+                : message.username}
             </h1>
             <p
               className={`${
-                message.id == mySocketId
+                message.userId == sessionData.userId
                   ? "bg-blue-400  rounded-tl-lg rounded-br-lg"
                   : "bg-slate-200  rounded-tr-lg rounded-bl-lg"
               } text-slate-800 text-md  w-fit max-w-[70%] px-2 py-0.5`}
