@@ -3,6 +3,7 @@ import { SendHorizontal } from "lucide-react";
 import React, { FormEvent, useEffect, useState } from "react";
 import { Message, sessionData } from "@repo/types";
 import { Socket } from "socket.io-client";
+import axios from "axios";
 
 const ChatSection = ({
   socket,
@@ -12,14 +13,30 @@ const ChatSection = ({
   sessionData: sessionData;
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    const receiveMessages = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/messages/${sessionData.roomId}`
+        );
+        const fetchedMessages = response.data;
+        setMessages(fetchedMessages);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    receiveMessages();
+  }, []);
+
   useEffect(() => {
     if (!socket) return;
     const handleReceiveMessage = (data: Message) => {
       setMessages((prev) => [...prev, data]);
     };
-    socket.on("receive-message", handleReceiveMessage);
+    socket.on("new-message", handleReceiveMessage);
     return () => {
-      socket.off("receive-message", handleReceiveMessage);
+      socket.off("new-message", handleReceiveMessage);
     };
   }, [socket]);
 

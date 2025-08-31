@@ -13,7 +13,7 @@ export type User = {
 
 export type Message = {
   userId: string;
-  username?: string;
+  username: string;
   content: string;
 };
 

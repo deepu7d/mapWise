@@ -19,7 +19,10 @@ model Room {
   destinationName     String
   destinationPosition Float[]
   createdAt           DateTime @default(now())
-  users               User[]
+
+  //relations 
+  users    User[]
+  messages Message[]
 }
 
 model User {
@@ -27,6 +30,24 @@ model User {
   name      String
   createdAt DateTime @default(now())
   position  Float[]
-  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  roomId    String
+
+  // relations
+  room     Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId   String
+  messages Message[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  username  String
+  content   String
+  createdAt DateTime @default(now())
+
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([roomId])
 }

@@ -1,8 +1,8 @@
 import { Socket } from "socket.io";
 import { prisma } from "./prisma";
-import { roomHandler } from "./sockets/roomHandler";
-import { locationHandler } from "./sockets/locationHandler";
-import { messageHandler } from "./sockets/messageHandler";
+import { roomHandler } from "./sockets/roomSocket";
+import { locationHandler } from "./sockets/locationSocket";
+import { messageHandler } from "./sockets/messageSocket";
 import http from "http";
 import { Server } from "socket.io";
 import app from "./app";
