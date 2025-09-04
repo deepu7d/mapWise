@@ -30,6 +30,7 @@ model User {
   name      String
   createdAt DateTime @default(now())
   position  Float[]
+  online    Boolean  @default(false)
 
   // relations
   room     Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)

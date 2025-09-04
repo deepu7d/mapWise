@@ -4,22 +4,33 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import useSocket from "@/hooks/useSocket";
-import { Destination, User } from "@/types";
 import { Share2 } from "lucide-react";
 import UserCards from "@/components/UserCards";
 import ChatSection from "@/components/ChatSection";
-import { sessionData } from "@repo/types";
+import { sessionData, User } from "@repo/types";
+import {
+  addUser,
+  updateUserPosition,
+  userOffline,
+} from "@/redux/features/users/usersSlice";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import toast from "react-hot-toast";
+import axios from "axios";
 
+const API_URL = "https://qs9pjlmq-8000.inc1.devtunnels.ms";
+const CLIENT_URL = "https://qs9pjlmq-3000.inc1.devtunnels.ms/";
 export default function PlaygroundPage() {
   const params = useParams();
   const roomId = params.id as string;
 
-  const [users, setUsers] = useState<User[]>([]);
+  const users = useAppSelector((state) => state.users);
+  const dispatch = useAppDispatch();
+
   const [sessionData, setSessionData] = useState<sessionData | null>(null);
   const currentPositionRef = useRef<[number, number] | null>(null);
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  const socket = useSocket("http://localhost:8000/");
+  const socket = useSocket(API_URL);
 
   const Map = useMemo(
     () =>
@@ -36,6 +47,22 @@ export default function PlaygroundPage() {
     setSessionData(JSON.parse(sessionString));
   }, []);
 
+  // useEffect(() => {
+  //   if (!sessionData) return;
+  //   const getUser = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${API_URL}/api/users/${sessionData.roomId}`
+  //       );
+  //       const currentUsers: User[] = response.data;
+  //       currentUsers.map((user: User) => dispatch(addUser(user)));
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getUser();
+  // }, [sessionData, socket, dispatch]);
+
   useEffect(() => {
     if (!socket || !sessionData) return;
 
@@ -44,83 +71,97 @@ export default function PlaygroundPage() {
         userId: sessionData.userId,
         roomId: sessionData.roomId,
       });
-      // setUsers((prev) => [
-      //   ...prev,
-      //   {
-      //     id: sessionData.userId,
-      //     name: sessionData.username,
-      //     position: [1, 2],
-      //   },
-      // ]);
     };
 
-    const handleCurrentUsers = (allUsers: User[]) => {
-      console.log(allUsers);
-      setUsers(allUsers);
+    const handleCurrentUsers = (currentUsers: User[]) => {
+      currentUsers.map((user: User) => dispatch(addUser(user)));
     };
 
     const handleNewUser = (newUser: User) => {
-      console.log("New User", newUser);
-      // Add user only if they don't already exist
-      setUsers((prev) =>
-        prev.some((u) => u.id === newUser.id) ? prev : [...prev, newUser]
+      toast(
+        <span>
+          <span className="font-bold">
+            {newUser.id == sessionData.userId ? "You" : newUser.name}
+          </span>{" "}
+          Joined
+        </span>,
+        {
+          icon: "🧑🏻",
+          className: "border border-solid border-black p-4 rounded-md bg-white",
+        }
       );
+      dispatch(addUser(newUser));
     };
 
     const handleLocationUpdate = (updatedUser: {
       id: string;
       position: [number, number];
     }) => {
-      setUsers((prev) =>
-        prev.map((user) =>
-          user.id === updatedUser.id
-            ? { ...user, position: updatedUser.position }
-            : user
-        )
-      );
+      dispatch(updateUserPosition(updatedUser));
     };
 
-    const handleUserDisconnected = (userId: string) => {
-      setUsers((prev) => prev.filter((user) => user.id !== userId));
+    const handleUserDisconnected = ({
+      id,
+      username,
+    }: {
+      id: string;
+      username: string;
+    }) => {
+      toast(
+        <span>
+          <span className="font-bold">{username}</span> Offline
+        </span>,
+        {
+          icon: "☹️",
+          className: "border border-solid border-black p-4 rounded-md bg-white",
+        }
+      );
+      dispatch(userOffline({ id }));
     };
 
     socket.on("connect", handleConnect);
-    socket.on("newUser", handleNewUser);
     socket.on("currentUsers", handleCurrentUsers);
-    socket.on("locationUpdate", handleLocationUpdate);
-    socket.on("userDisconnected", handleUserDisconnected);
+    socket.on("newUser", handleNewUser);
+    socket.on("location-update", handleLocationUpdate);
+    socket.on("user-disconneted", handleUserDisconnected);
 
-    // --- SENDING your location ---
-    // const watchId = navigator.geolocation.watchPosition(
-    //   (position) => {
-    //     const { latitude, longitude } = position.coords;
-    //     currentPositionRef.current = [latitude, longitude];
-    //   },
-    //   (error) => console.error("Geolocation error:", error),
-    //   { enableHighAccuracy: true, timeout: 5000 }
-    // );
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        currentPositionRef.current = [latitude, longitude];
+        dispatch(
+          updateUserPosition({
+            id: sessionData.userId,
+            position: [latitude, longitude],
+          })
+        );
+      },
+      (error) => console.error("Geolocation error:", error),
+      { enableHighAccuracy: true }
+    );
 
-    if (currentPositionRef.current) {
-      socket.emit("updateLocation", {
-        name: sessionData.username,
-        position: currentPositionRef.current,
-      });
-    }
+    const intervalId = setInterval(() => {
+      if (currentPositionRef.current) {
+        socket.emit("updateLocation", {
+          userId: sessionData.userId,
+          position: currentPositionRef.current,
+        });
+      }
+    }, 3000);
 
     return () => {
       console.log("Cleaning up listeners and intervals...");
-      // navigator.geolocation.clearWatch(watchId);
-
-      // Remove all listeners to prevent duplicate events on re-render
+      navigator.geolocation.clearWatch(watchId);
+      clearInterval(intervalId);
       socket.off("connect", handleConnect);
       socket.off("newUser", handleNewUser);
       socket.off("currentUsers", handleCurrentUsers);
       socket.off("locationUpdate", handleLocationUpdate);
-      socket.off("userDisconnected", handleUserDisconnected);
+      socket.off("user-disconneted", handleUserDisconnected);
     };
-  }, [socket, roomId]);
+  }, [socket, roomId, sessionData, dispatch]);
 
-  const link = `${roomId}`;
+  const link = `${CLIENT_URL}?roomId=${roomId}`;
   const handleCopy = () => {
     navigator.clipboard
       .writeText(link)
@@ -135,11 +176,55 @@ export default function PlaygroundPage() {
       });
   };
 
-  if (!sessionData) return <h1>Fetching session data</h1>;
+  if (!sessionData || !socket) {
+    return (
+      <h1 className="h-dvh w-full flex justify-center items-center text-3xl">
+        Loading....
+      </h1>
+    );
+  }
+
+  const handleManualUpdate = () => {
+    if (!currentPositionRef.current || !sessionData || !socket) return;
+    toast.success("BUtton clicked");
+
+    // Get current position as default values for the prompts
+    const [currentLat, currentLng] = currentPositionRef.current;
+
+    // Prompt for new latitude
+    const latInput = prompt("Enter new Latitude:", currentLat.toString());
+    // If user cancels, stop the function
+    if (latInput === null) return;
+
+    // Prompt for new longitude
+    const lngInput = prompt("Enter new Longitude:", currentLng.toString());
+    // If user cancels, stop the function
+    if (lngInput === null) return;
+
+    // Convert inputs to numbers
+    const newLat = parseFloat(latInput);
+    const newLng = parseFloat(lngInput);
+
+    // Check if the inputs are valid numbers and emit
+    if (!isNaN(newLat) && !isNaN(newLng)) {
+      socket.emit("updateLocation", {
+        userId: sessionData.userId,
+        position: [newLat, newLng],
+      });
+      dispatch(
+        updateUserPosition({
+          id: sessionData.userId,
+          position: [newLat, newLng],
+        })
+      );
+    } else {
+      alert("Invalid input. Please enter numbers only.");
+    }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 gap-2 h-dvh overflow-hidden w-full">
-      <div className="text-center w-full h-[10%] max-w-5xl">
+      <div className="text-center w-full h-[5%] max-w-5xl">
         <div className="flex items-center justify-center gap-x-4 rounded-lg">
           <p className="w-[80%] lg:w-fit truncate text-sm text-gray-600 font-bold">
             {link}
@@ -151,20 +236,28 @@ export default function PlaygroundPage() {
             {isCopied ? "copied" : <Share2 />}
           </button>
         </div>
-        <p className="text-xs text-gray-600 truncate">
+        {/* <p className="text-xs text-gray-600 truncate">
           Destination: {sessionData.destinationName}
-        </p>
+        </p> */}
       </div>
-      <div className="h-[30%] w-full max-w-5xl border-2 border-gray-300 rounded-lg overflow-hidden m-auto">
+      <div className="h-[35%] w-full max-w-5xl border-2 border-gray-300 rounded-lg overflow-hidden m-auto">
         <Map
-          users={users}
           destination={{
             name: sessionData.destinationName,
             position: sessionData.destinationPosition,
           }}
+          currentUser={sessionData.userId}
         />
       </div>
-      <div className="w-full h-[10%] max-w-5xl">
+      {/* <div className="text-center my-2">
+        <button
+          onClick={handleManualUpdate}
+          className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600"
+        >
+          Manually Update Location
+        </button>
+      </div> */}
+      <div className="w-full h-[10%] max-w-5xl no-select no-highlight">
         <UserCards users={users} currentSocketId={sessionData.userId} />
       </div>
       <div className="w-full h-[50%] max-w-5xl">

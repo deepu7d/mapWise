@@ -1,9 +1,9 @@
-import useSocket from "@/hooks/useSocket";
 import { SendHorizontal } from "lucide-react";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Message, sessionData } from "@repo/types";
 import { Socket } from "socket.io-client";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const ChatSection = ({
   socket,
@@ -13,12 +13,20 @@ const ChatSection = ({
   sessionData: sessionData;
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   useEffect(() => {
     const receiveMessages = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/messages/${sessionData.roomId}`
+          `https://qs9pjlmq-8000.inc1.devtunnels.ms/api/messages/${sessionData.roomId}`
         );
         const fetchedMessages = response.data;
         setMessages(fetchedMessages);
@@ -32,6 +40,15 @@ const ChatSection = ({
   useEffect(() => {
     if (!socket) return;
     const handleReceiveMessage = (data: Message) => {
+      toast(
+        <span>
+          <span className="font-bold">{data.username}</span> sent Message
+        </span>,
+        {
+          icon: "🗨️",
+          className: "border border-solid border-black p-4 rounded-md bg-white",
+        }
+      );
       setMessages((prev) => [...prev, data]);
     };
     socket.on("new-message", handleReceiveMessage);
@@ -71,48 +88,36 @@ const ChatSection = ({
       </div>
 
       {/* Message Area */}
-      <div className="flex-1 p-2 space-y-4 overflow-y-auto">
-        {messages.map((message: Message) => (
-          <div
-            key={Math.random()}
-            className={`flex flex-col ${
-              message.userId == sessionData.userId ? "items-end" : "items-start"
-            }`}
-          >
-            <h1 className="text-xs">
-              {message.username == sessionData.username
-                ? "You"
-                : message.username}
-            </h1>
-            <p
-              className={`${
+      <div
+        ref={chatContainerRef}
+        className="flex-1 p-2 space-y-2 overflow-y-auto"
+      >
+        {messages.map((message: Message, index) => {
+          const showUsername =
+            message.userId != sessionData.userId &&
+            (index === 0 || messages[index - 1].userId !== message.userId);
+          return (
+            <div
+              key={Math.random()}
+              className={`flex flex-col ${
                 message.userId == sessionData.userId
-                  ? "bg-blue-400  rounded-tl-lg rounded-br-lg"
-                  : "bg-slate-200  rounded-tr-lg rounded-bl-lg"
-              } text-slate-800 text-md  w-fit max-w-[70%] px-2 py-0.5`}
+                  ? "items-end"
+                  : "items-start"
+              }`}
             >
-              {message.content}
-            </p>
-          </div>
-        ))}
-        {/* Received Message Example */}
-        {/* <div className="flex justify-start">
-          <div className="bg-gray-200 text-gray-800 p-3 rounded-l-lg rounded-br-lg max-w-xs lg:max-w-md">
-            <p className="text-sm">
-              Hello! Welcome to our support. How can I help you today?
-            </p>
-          </div>
-        </div> */}
-
-        {/* Sent Message Example */}
-        {/* <div className="flex justify-end">
-          <div className="bg-blue-500 text-white p-3 rounded-r-lg rounded-bl-lg max-w-xs lg:max-w-md">
-            <p className="text-sm">
-              Hi, I'm having trouble with my account settings. I can't seem to
-              update my profile picture.
-            </p>
-          </div>
-        </div>  */}
+              <h1 className="text-xs">{showUsername && message.username}</h1>
+              <p
+                className={`${
+                  message.userId == sessionData.userId
+                    ? "bg-blue-400  rounded-tl-lg rounded-br-lg"
+                    : "bg-slate-200  rounded-tr-lg rounded-bl-lg"
+                } text-slate-800 text-md  w-fit max-w-[70%] px-2 py-0.5`}
+              >
+                {message.content}
+              </p>
+            </div>
+          );
+        })}
       </div>
 
       {/* Input Area */}

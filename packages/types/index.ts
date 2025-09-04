@@ -8,7 +8,14 @@ export type Destination = {
 export type User = {
   id: string;
   name: string;
-  position?: Position;
+  position: Position; // For example, position in a list
+  duration?: number; // in minutes
+  distance?: number;
+  color?: {
+    tailwind: string;
+    hex: string;
+  };
+  online: boolean;
 };
 
 export type Message = {

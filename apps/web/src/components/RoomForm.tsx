@@ -1,6 +1,6 @@
 "use client";
 
-import { Destination } from "@/types";
+import { Destination } from "@repo/types";
 import { useState, useEffect, FormEvent } from "react";
 
 type FormProps = {
@@ -11,9 +11,9 @@ type FormProps = {
     destination?: Destination;
   }) => void;
   isLoading: boolean;
+  roomParam: string;
 };
 
-// Define the type for the Nominatim API response
 type SearchResult = {
   place_id: number;
   display_name: string;
@@ -21,9 +21,17 @@ type SearchResult = {
   lon: string;
 };
 
-export default function RoomForm({ isAdmin, onSubmit, isLoading }: FormProps) {
+export default function RoomForm({
+  isAdmin,
+  onSubmit,
+  isLoading,
+  roomParam,
+}: FormProps) {
   const [name, setName] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
+  useEffect(() => {
+    if (roomParam) setRoomId(roomParam);
+  }, []);
 
   const [destinationQuery, setDestinationQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -130,7 +138,7 @@ export default function RoomForm({ isAdmin, onSubmit, isLoading }: FormProps) {
               </ul>
             )}
           </div>
-        ) : (
+        ) : !roomId ? (
           <div>
             <label
               htmlFor="roomId"
@@ -148,6 +156,8 @@ export default function RoomForm({ isAdmin, onSubmit, isLoading }: FormProps) {
               required
             />
           </div>
+        ) : (
+          ""
         )}
 
         <button

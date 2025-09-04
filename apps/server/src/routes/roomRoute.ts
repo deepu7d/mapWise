@@ -8,7 +8,6 @@ router.get("/", (req, res) => {
 });
 
 router.post("/join/:roomId", joinRoom);
-
 router.post("/create-room", createRoom);
 
 export default router;

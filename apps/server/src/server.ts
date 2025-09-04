@@ -29,29 +29,29 @@ io.on("connection", async (socket: Socket) => {
   locationHandler(io, socket);
   messageHandler(io, socket);
 
-  socket.on("disconnect", async () => {
-    console.log(`‹ User disconnected: ${socket.id}`);
-    const { roomId } = socket.data;
+  // socket.on("disconnect", async () => {
+  //   console.log(`‹ User disconnected: ${socket.id}`);
+  //   const { roomId } = socket.data;
 
-    try {
-      // const user = await prisma.user.delete({ where: { id: socket.data.id } });
-      // console.log("User deleted, name ->", user.name);
-      // if (roomId) {
-      //   // Check if the room is now empty
-      //   const remainingUsers = await prisma.user.count({ where: { roomId } });
-      //   if (remainingUsers === 0) {
-      //     // If empty, delete the room
-      //     await prisma.room.delete({ where: { id: roomId } });
-      //     console.log(`[Room] Deleted empty room ${roomId}`);
-      //   } else {
-      //     // Otherwise, just notify the remaining users
-      //     io.to(roomId).emit("userDisconnected", socket.id);
-      //   }
-      // }
-    } catch (error) {
-      console.log("Error deleting user or room");
-    }
-  });
+  //   try {
+  //     const user = await prisma.user.delete({ where: { id: socket.data.id } });
+  //     console.log("User deleted, name ->", user.name);
+  //     if (roomId) {
+  //       // Check if the room is now empty
+  //       const remainingUsers = await prisma.user.count({ where: { roomId } });
+  //       if (remainingUsers === 0) {
+  //         // If empty, delete the room
+  //         await prisma.room.delete({ where: { id: roomId } });
+  //         console.log(`[Room] Deleted empty room ${roomId}`);
+  //       } else {
+  //         // Otherwise, just notify the remaining users
+  //         io.to(roomId).emit("userDisconnected", socket.id);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log("Error deleting user or room");
+  //   }
+  // });
 });
 
 server.listen(PORT, () => {

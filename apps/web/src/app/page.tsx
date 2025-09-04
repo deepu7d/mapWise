@@ -1,15 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import RoomForm from "@/components/RoomForm";
-import { useRouter } from "next/navigation";
-import { Destination } from "@/types";
-import { cookieName } from "@/helper/constant";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
-import { Position, sessionData } from "@repo/types";
+import { Destination, sessionData } from "@repo/types";
 import { getCurrentLocation } from "@/helper/helperFunctions";
 
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "https://qs9pjlmq-8000.inc1.devtunnels.ms";
 
 type formData = {
   name: string;
@@ -18,12 +16,14 @@ type formData = {
 };
 
 export default function HomePage() {
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParam = useSearchParams();
+  const roomParam = searchParam.get("roomId");
 
   const handleFormSubmit = async (data: formData) => {
-    // setIsLoading(true);
+    setIsLoading(true);
 
     const userPosition = await getCurrentLocation();
 
@@ -58,7 +58,7 @@ export default function HomePage() {
       sessionStorage.setItem("session-cookie", JSON.stringify(sessionData));
       router.push(`playground/${sessionData.roomId}`);
     }
-    // setIsLoading(false);
+    setIsLoading(false);
   };
 
   return (
@@ -92,6 +92,7 @@ export default function HomePage() {
         isAdmin={isAdmin}
         onSubmit={handleFormSubmit}
         isLoading={isLoading}
+        roomParam={roomParam}
       />
     </main>
   );
