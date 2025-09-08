@@ -1,7 +1,7 @@
 import { Destination, Position, sessionData } from "@repo/types";
 import { prisma } from "../prisma";
 import { Request, Response } from "express";
-import { Room, User } from "../generated/prisma";
+import { Room, User } from "@prisma/client";
 
 export const joinRoom = async (req: Request, res: Response) => {
   const { roomId } = req.params;

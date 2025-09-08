@@ -11,7 +11,7 @@ type FormProps = {
     destination?: Destination;
   }) => void;
   isLoading: boolean;
-  roomParam: string;
+  roomParam: string | null;
 };
 
 type SearchResult = {

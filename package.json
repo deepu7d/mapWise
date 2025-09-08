@@ -2,6 +2,7 @@
   "name": "project-map",
   "private": true,
   "scripts": {
+    "start": "turbo run start --parallel --filter=web --filter=server",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
