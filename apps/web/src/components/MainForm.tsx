@@ -7,8 +7,6 @@ import axios from "axios";
 import { Destination, sessionData } from "@repo/types";
 import { getCurrentLocation } from "@/helper/helperFunctions";
 
-const API_BASE_URL = "https://qs9pjlmq-8000.inc1.devtunnels.ms";
-
 type formData = {
   name: string;
   roomId?: string;
@@ -31,17 +29,20 @@ export default function MainForm() {
       let response;
 
       if (isAdmin) {
-        response = await axios.post(`${API_BASE_URL}/api/room/create-room`, {
-          username: data.name,
-          destination: {
-            name: data.destination?.name,
-            position: data.destination?.position,
-          },
-          userPosition: userPosition,
-        });
+        response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/room/create-room`,
+          {
+            username: data.name,
+            destination: {
+              name: data.destination?.name,
+              position: data.destination?.position,
+            },
+            userPosition: userPosition,
+          }
+        );
       } else {
         response = await axios.post(
-          `${API_BASE_URL}/api/room/join/${data.roomId}`,
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/room/join/${data.roomId}`,
           {
             username: data.name,
             position: userPosition,

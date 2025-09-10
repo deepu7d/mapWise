@@ -16,8 +16,6 @@ import {
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import toast from "react-hot-toast";
 
-const API_URL = "https://qs9pjlmq-8000.inc1.devtunnels.ms";
-const CLIENT_URL = "https://qs9pjlmq-3000.inc1.devtunnels.ms/";
 export default function PlaygroundPage() {
   const params = useParams();
   const roomId = params.id as string;
@@ -29,7 +27,7 @@ export default function PlaygroundPage() {
   const currentPositionRef = useRef<[number, number] | null>(null);
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  const socket = useSocket(API_URL);
+  const socket = useSocket(process.env.NEXT_PUBLIC_API_BASE_URL || "");
 
   const Map = useMemo(
     () =>
@@ -144,7 +142,7 @@ export default function PlaygroundPage() {
     };
   }, [socket, roomId, sessionData, dispatch]);
 
-  const link = `${CLIENT_URL}?roomId=${roomId}`;
+  const link = `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}?roomId=${roomId}`;
   const handleCopy = () => {
     navigator.clipboard
       .writeText(link)
