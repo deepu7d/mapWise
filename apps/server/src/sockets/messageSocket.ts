@@ -18,11 +18,13 @@ export function messageHandler(io: Server, socket: Socket) {
       });
 
       const newMessage: Message = {
-        content: content,
-        userId: userId,
-        username: username,
+        id: message.id,
+        content: message.content,
+        userId: message.userId,
+        username: message.username,
+        createdAt: message.createdAt,
       };
-      socket.to(roomId).emit("new-message", newMessage);
+      io.to(roomId).emit("new-message", newMessage);
     } catch (error) {}
   };
   socket.on("send-message", sendMessage);

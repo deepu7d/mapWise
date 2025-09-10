@@ -2,8 +2,13 @@ import { SendHorizontal } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { Message, sessionData } from "@repo/types";
 import { Socket } from "socket.io-client";
-import axios from "axios";
 import toast from "react-hot-toast";
+
+const sortMessages = (msgs: Message[]) => {
+  return msgs.sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
+};
 
 const ChatSection = ({
   socket,
@@ -23,26 +28,17 @@ const ChatSection = ({
   }, [messages]);
 
   useEffect(() => {
-    const receiveMessages = async () => {
-      try {
-        const response = await axios.get(
-          `https://qs9pjlmq-8000.inc1.devtunnels.ms/api/messages/${sessionData.roomId}`
-        );
-        const fetchedMessages = response.data;
-        setMessages(fetchedMessages);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    receiveMessages();
-  }, []);
-
-  useEffect(() => {
     if (!socket) return;
     const handleReceiveMessage = (data: Message) => {
       toast(
         <span>
-          <span className="font-bold">{data.username}</span> sent Message
+          {data.userId === sessionData.userId ? (
+            "Message Sent"
+          ) : (
+            <>
+              <span className="font-bold">{data.username}</span> sent Message
+            </>
+          )}
         </span>,
         {
           icon: "🗨️",
@@ -51,6 +47,10 @@ const ChatSection = ({
       );
       setMessages((prev) => [...prev, data]);
     };
+    const handleCurrentMessages = (data: Message[]) => {
+      setMessages(sortMessages(data));
+    };
+    socket.on("current-messages", handleCurrentMessages);
     socket.on("new-message", handleReceiveMessage);
     return () => {
       socket.off("new-message", handleReceiveMessage);
@@ -63,14 +63,6 @@ const ChatSection = ({
     const formData = new FormData(event.currentTarget);
     const message = formData.get("message");
     if (!message) return;
-    setMessages((prev) => [
-      ...prev,
-      {
-        userId: sessionData.userId,
-        username: sessionData.username,
-        content: message.toString(),
-      },
-    ]);
 
     socket?.emit("send-message", {
       content: message,

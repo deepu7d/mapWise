@@ -19,9 +19,11 @@ export type User = {
 };
 
 export type Message = {
+  id: string;
   userId: string;
   username: string;
   content: string;
+  createdAt: Date;
 };
 
 export type sessionData = {

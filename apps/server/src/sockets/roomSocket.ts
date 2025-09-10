@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { prisma } from "../prisma";
-import { sessionData, User } from "@repo/types";
+import { Message, sessionData, User } from "@repo/types";
 
 export function roomHandler(io: Server, socket: Socket) {
   const joinRoom = async ({ userId, roomId }: any) => {
@@ -40,6 +40,12 @@ export function roomHandler(io: Server, socket: Socket) {
         position: [newUser.position[0], newUser.position[1]],
         online: newUser.online,
       });
+
+      const messagesInRoom: Message[] = await prisma.message.findMany({
+        where: { roomId: roomId },
+      });
+
+      socket.emit("current-messages", messagesInRoom);
     } catch (error) {
       console.error(`!!! ERROR in joinRoom for socket ${socket.id}:`, error);
       socket.emit("error", "Failed to join room.");
