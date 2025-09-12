@@ -17,8 +17,8 @@ import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import toast from "react-hot-toast";
 
 export default function PlaygroundPage() {
-  const params = useParams();
-  const roomId = params.id as string;
+  const params = useParams<{ id: string }>();
+  const roomId = params.id;
 
   const users = useAppSelector((state) => state.users);
   const dispatch = useAppDispatch();
@@ -137,7 +137,7 @@ export default function PlaygroundPage() {
       socket.off("connect", handleConnect);
       socket.off("newUser", handleNewUser);
       socket.off("currentUsers", handleCurrentUsers);
-      socket.off("locationUpdate", handleLocationUpdate);
+      socket.off("location-update", handleLocationUpdate);
       socket.off("user-disconneted", handleUserDisconnected);
     };
   }, [socket, roomId, sessionData, dispatch]);
