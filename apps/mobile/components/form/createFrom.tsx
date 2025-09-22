@@ -1,0 +1,75 @@
+import { View, Text, TextInput, Button } from "react-native";
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(2, { message: "Name must be at least 2 character long" }),
+  destination: z.object({
+    name: z.string().min(1, { message: "Destination name is required." }),
+    position: z.object({
+      lat: z.number(),
+      lng: z.number(),
+    }),
+  }),
+});
+
+type formSchemaType = z.infer<typeof formSchema>;
+
+export default function CreateRoom() {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<formSchemaType>({
+    resolver: zodResolver(formSchema),
+  });
+  const onSubmit = (data: formSchemaType) => console.log(data);
+  return (
+    <View className="bg-white px-10 py-8 gap-8 shadow-md shadow-slate-400">
+      <Text className="text-3xl font-bold self-center">Create Room</Text>
+      <View className="flex gap-1">
+        <Text className="text-gray-600 font-medium">Your Name</Text>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              placeholder="First name"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              className="border border-gray-300 rounded-xl px-3 py-3 text-base text-gray-800 focus:border-blue-400 "
+            />
+          )}
+          name="name"
+        />
+        {errors.name && <Text className="text-red-500">This is required.</Text>}
+      </View>
+      <View className="flex gap-1">
+        <Text className="text-gray-600 font-medium ">Destination</Text>
+
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              placeholder="Enter Desination"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              className="border border-gray-300 rounded-xl px-3 py-3 text-base text-gray-800 focus:border-blue-400 "
+            />
+          )}
+          name="destination"
+        />
+        {errors.destination && (
+          <Text className="text-red-500">This is required.</Text>
+        )}
+      </View>
+
+      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+    </View>
+  );
+}

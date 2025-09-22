@@ -1,15 +1,10 @@
-import { Text, View } from "react-native";
+import MainForm from "@/components/form/MainForm";
+import { View } from "react-native";
 
-export default function Index() {
+export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Hey, I am Deepanshu .</Text>
+    <View className="flex-1 w-full">
+      <MainForm />
     </View>
   );
 }
