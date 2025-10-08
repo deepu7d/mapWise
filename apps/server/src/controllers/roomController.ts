@@ -48,6 +48,8 @@ export const createRoom = async (req: Request, res: Response) => {
   }: { username: string; destination: Destination; userPosition: Position } =
     req.body;
 
+  console.log("Request came");
+
   try {
     // atomic transaction
     const { room, user } = await prisma.$transaction(
@@ -88,6 +90,7 @@ export const createRoom = async (req: Request, res: Response) => {
 
     res.status(201).json(payload);
   } catch (error) {
-    res.status(401).json(error);
+    console.log("ERROR", error);
+    res.status(400).json(error);
   }
 };

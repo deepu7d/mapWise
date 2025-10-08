@@ -11,15 +11,15 @@ export default function RootLayout() {
       }}
     >
       <Stack.Screen
-        name="index"
-        options={{
-          title: "Home",
-        }}
-      />
-      <Stack.Screen
         name="(playground)"
         options={{
           title: "Playground",
+        }}
+      />
+      <Stack.Screen
+        name="index"
+        options={{
+          title: "Home",
         }}
       />
     </Stack>

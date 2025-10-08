@@ -15,6 +15,7 @@ import {
 } from "@/redux/features/users/usersSlice";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import toast from "react-hot-toast";
+import Maptiler from "@/components/Maptiler";
 
 export default function PlaygroundPage() {
   const params = useParams<{ id: string }>();
@@ -222,13 +223,14 @@ export default function PlaygroundPage() {
         </p> */}
       </div>
       <div className="h-[35%] w-full max-w-5xl border-2 border-gray-300 rounded-lg overflow-hidden m-auto">
-        <Map
+        {/* <Map
           destination={{
             name: sessionData.destinationName,
             position: sessionData.destinationPosition,
           }}
           currentUser={sessionData.userId}
-        />
+        /> */}
+        <Maptiler />
       </div>
       {/* <div className="text-center my-2">
         <button
