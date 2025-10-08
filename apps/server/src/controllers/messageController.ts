@@ -5,7 +5,7 @@ import { Message } from "@repo/types";
 export const getMessages = async (req: Request, res: Response) => {
   const { roomId } = req.params;
   try {
-    const allRoomMessages: Message[] = await prisma.message.findMany({
+    const allRoomMessages = await prisma.message.findMany({
       where: {
         roomId: roomId,
       },
