@@ -1,14 +1,8 @@
 import { SendHorizontal } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Message, sessionData } from "@repo/types";
 import { Socket } from "socket.io-client";
-import toast from "react-hot-toast";
-
-const sortMessages = (msgs: Message[]) => {
-  return msgs.sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  );
-};
+import useMessageSession from "@/hooks/useMessageSession";
 
 const ChatSection = ({
   socket,
@@ -17,8 +11,9 @@ const ChatSection = ({
   socket: Socket;
   sessionData: sessionData;
 }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  const messages = useMessageSession(socket, sessionData);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -26,36 +21,6 @@ const ChatSection = ({
         chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
-
-  useEffect(() => {
-    if (!socket) return;
-    const handleReceiveMessage = (data: Message) => {
-      toast(
-        <span>
-          {data.userId === sessionData.userId ? (
-            "Message Sent"
-          ) : (
-            <>
-              <span className="font-bold">{data.username}</span> sent Message
-            </>
-          )}
-        </span>,
-        {
-          icon: "🗨️",
-          className: "border border-solid border-black p-4 rounded-md bg-white",
-        }
-      );
-      setMessages((prev) => [...prev, data]);
-    };
-    const handleCurrentMessages = (data: Message[]) => {
-      setMessages(sortMessages(data));
-    };
-    socket.on("current-messages", handleCurrentMessages);
-    socket.on("new-message", handleReceiveMessage);
-    return () => {
-      socket.off("new-message", handleReceiveMessage);
-    };
-  }, [socket]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,13 +38,10 @@ const ChatSection = ({
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-slate-100 shadow-lg rounded-2xl">
-      {/* heading */}
+    <div className="flex flex-col h-full w-full max-w-5xl bg-slate-100 shadow-lg rounded-2xl">
       <div className="py-2 px-4 border-b border-gray-200">
         <h1 className="text-md font-semibold text-gray-800">Chat Here</h1>
       </div>
-
-      {/* Message Area */}
       <div
         ref={chatContainerRef}
         className="flex-1 p-2 space-y-2 overflow-y-auto"
@@ -111,8 +73,6 @@ const ChatSection = ({
           );
         })}
       </div>
-
-      {/* Input Area */}
       <div className="p-4 border-t border-gray-200 bg-gray-50">
         <form onSubmit={handleSubmit} className="flex items-center space-x-3">
           <input

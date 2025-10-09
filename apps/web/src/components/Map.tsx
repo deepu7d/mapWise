@@ -32,64 +32,66 @@ const FriendsMap = ({ destination, currentUser }: FriendsMapProps) => {
   const users = useAppSelector((state) => state.users);
 
   return (
-    <MapContainer
-      center={destination.position}
-      zoom={15}
-      scrollWheelZoom={true}
-      className="h-full w-full"
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+    <div className="h-full w-full max-w-5xl border-2 border-gray-300 rounded-lg overflow-hidden m-auto">
+      <MapContainer
+        center={destination.position}
+        zoom={15}
+        scrollWheelZoom={true}
+        className="h-full w-full"
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
 
-      {users.map((user, index) => {
-        const colorHex = usersColor[index % usersColor.length].hex;
-        const iconSvg = getMarkerSVG(colorHex);
+        {users.map((user, index) => {
+          const colorHex = usersColor[index % usersColor.length].hex;
+          const iconSvg = getMarkerSVG(colorHex);
 
-        const userIcon = new L.DivIcon({
-          html: iconSvg,
-          className: "",
-          iconSize: [40, 40],
-          iconAnchor: [20, 40],
-        });
+          const userIcon = new L.DivIcon({
+            html: iconSvg,
+            className: "",
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+          });
 
-        return (
-          <React.Fragment key={user.id}>
-            {user.online && (
-              <Marker position={user.position} icon={userIcon}>
-                <Tooltip
-                  permanent
-                  direction="top"
-                  offset={[0, -40]}
-                  className="
+          return (
+            <React.Fragment key={user.id}>
+              {user.online && (
+                <Marker position={user.position} icon={userIcon}>
+                  <Tooltip
+                    permanent
+                    direction="top"
+                    offset={[0, -40]}
+                    className="
        bg-slate-900/80 p-2 rounded-md shadow-lg border border-white/20
     text-white text-center
   "
-                >
-                  <div>
-                    <span className="block font-bold text-sm">
-                      {currentUser === user.id ? "You" : user.name}
-                    </span>
-                  </div>
-                </Tooltip>
-              </Marker>
-            )}
-            <Routing
+                  >
+                    <div>
+                      <span className="block font-bold text-sm">
+                        {currentUser === user.id ? "You" : user.name}
+                      </span>
+                    </div>
+                  </Tooltip>
+                </Marker>
+              )}
+              {/* <Routing
               user={user}
               destination={destination.position}
               index={index}
-            />
-          </React.Fragment>
-        );
-      })}
+            /> */}
+            </React.Fragment>
+          );
+        })}
 
-      <Marker position={destination.position} icon={destinationIcon}>
-        <Popup>
-          <h3 className="font-bold">{destination.name}</h3>
-        </Popup>
-      </Marker>
-    </MapContainer>
+        <Marker position={destination.position} icon={destinationIcon}>
+          <Popup>
+            <h3 className="font-bold">{destination.name}</h3>
+          </Popup>
+        </Marker>
+      </MapContainer>
+    </div>
   );
 };
 
