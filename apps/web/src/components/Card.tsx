@@ -12,25 +12,32 @@ type userCard = {
 
 const Card = ({ index, user, isCurrent }: userCard) => {
   const userColor = usersColor[index % usersColor.length];
-  const tooltipHtmlContent =
-    user.duration && user.distance
-      ? `<div class="flex flex-col gap-1 text-left">
-         <span>${formatDuration(user.duration)} away</span>
-         <span>${(user.distance / 1000).toFixed(2)} km</span>
-       </div>`
-      : "Reached";
+
   return (
     <li
       className={`
-        ${isCurrent ? "font-bold shadow-sm shadow-slate-400" : ""} 
-        ${!user.online ? "bg-gray-500 text-white border-1 border-black" : `${userColor.tailwind}`}
+        ${isCurrent ? "font-bold border-1 border-slate-300" : ""} 
+        ${!user.online ? "bg-gray-300 text-black " : `${userColor.tailwind}`}
         
-       w-fit px-3 py-1 rounded-2xl text-slate-800 my-1 `}
-      data-tooltip-id="my-tooltip"
-      data-tooltip-html={tooltipHtmlContent}
-      data-tooltip-place="bottom"
+      relative px-4 py-2 rounded-2xl text-slate-800 my-1 w-full max-w-sm text-md shadow-sm shadow-slate-400 `}
     >
-      {isCurrent ? "You" : user.name}
+      <h1 className="mb-2">{isCurrent ? "You" : user.name}</h1>
+      {user.duration && user.distance ? (
+        <>
+          <span>{formatDuration(user.duration)} away</span>
+
+          <span>{(user.distance / 1000).toFixed(2)} km</span>
+        </>
+      ) : (
+        <div className="flex gap-4">
+          <span>1hr away</span>
+          <span>20 km</span>
+        </div>
+        // "Reached"
+      )}
+      <span className="absolute top-1 right-4">
+        {user.online ? "Online" : "Offline"}
+      </span>
     </li>
   );
 };

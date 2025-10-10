@@ -77,10 +77,10 @@ const FriendsMap = ({ destination, currentUser }: FriendsMapProps) => {
                 </Marker>
               )}
               {/* <Routing
-              user={user}
-              destination={destination.position}
-              index={index}
-            /> */}
+                user={user}
+                destination={destination.position}
+                index={index}
+              /> */}
             </React.Fragment>
           );
         })}

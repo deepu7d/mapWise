@@ -1,4 +1,5 @@
-import { Share2 } from "lucide-react";
+import { LogOut, Share2 } from "lucide-react";
+import { redirect } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Navbar({ roomId }: { roomId: string }) {
@@ -19,18 +20,30 @@ export default function Navbar({ roomId }: { roomId: string }) {
         console.log("failed to copy", err);
       });
   };
+  const handleExit = () => {
+    if (window.confirm("Are you sure you want to exit?")) {
+      sessionStorage.clear();
+      redirect("/");
+    }
+  };
   return (
-    <div className="text-center w-full h-[5%] max-w-5xl">
-      <div className="flex items-center justify-center gap-x-4 rounded-lg">
-        <p className="w-[80%] lg:w-fit truncate text-sm text-gray-600 font-bold">
-          Invite Others
-        </p>
-        <button
-          onClick={handleCopy}
-          className="flex-shrink-0 bg-blue-500 rounded-xl text-white font-bold p-2 hover:bg-blue-600"
-        >
-          {isCopied ? "copied" : <Share2 />}
-        </button>
+    <div className="text-center w-full h-[5%] max-w-5xl mb-4">
+      <div className="w-full max-w-md flex items-center justify-between gap-x-4 rounded-lg">
+        <p className="text-lg font-bold text-gray-800">MapWise</p>
+        <div className="flex gap-4">
+          <button
+            onClick={handleCopy}
+            className="bg-blue-500 rounded-xl text-white font-bold p-2 hover:bg-blue-600"
+          >
+            {isCopied ? "copied" : <Share2 />}
+          </button>
+          <button
+            onClick={handleExit}
+            className="bg-red-500 p-2 rounded-xl text-white"
+          >
+            <LogOut />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -14,9 +14,8 @@ const UserCards = ({ currentSocketId }: UserCardsProps) => {
 
   return (
     <div className="w-full rounded-lg max-w-5xl no-select no-highlight">
-      <h1 className="text-gray-800 font-bold text-lg mb-1">Room Members</h1>
       {users.length > 0 ? (
-        <ul className="flex gap-2 overflow-x-auto mx-1">
+        <ul className="flex flex-wrap gap-2 ">
           {users.map((user, index) => {
             return (
               <Card

@@ -50,25 +50,28 @@ export default function PlaygroundPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 gap-2 h-dvh overflow-hidden w-full">
+    <main className="flex min-h-screen flex-col items-center pt-4 px-4 h-dvh overflow-hidden w-full ">
       <Navbar roomId={roomId} />
-      <div className="h-full w-full">
-        {currentTab == "map" && (
-          <Map
-            destination={{
-              name: sessionData.destinationName,
-              position: sessionData.destinationPosition,
-            }}
-            currentUser={sessionData.userId}
-          />
-        )}
-
-        {currentTab == "users" && (
-          <UserCards currentSocketId={sessionData.userId} />
-        )}
-        {currentTab == "chat" && (
-          <ChatSection socket={socket} sessionData={sessionData} />
-        )}
+      <div
+        className={`h-full w-full ${currentTab != "map" ? "hidden" : "block"}`}
+      >
+        <Map
+          destination={{
+            name: sessionData.destinationName,
+            position: sessionData.destinationPosition,
+          }}
+          currentUser={sessionData.userId}
+        />
+      </div>
+      <div
+        className={`h-full w-full ${currentTab != "users" ? "hidden" : "block"}`}
+      >
+        <UserCards currentSocketId={sessionData.userId} />
+      </div>
+      <div
+        className={`h-full w-full ${currentTab != "chat" ? "hidden" : "block"}`}
+      >
+        <ChatSection socket={socket} sessionData={sessionData} />
       </div>
       <TabBar setCurrentTab={setCurrentTab} />
     </main>

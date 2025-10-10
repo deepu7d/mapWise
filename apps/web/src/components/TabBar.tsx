@@ -1,4 +1,5 @@
 import { tabType } from "@/app/playground/[id]/page";
+import { Map, MessageCircleMore, User } from "lucide-react";
 import React from "react";
 export default function TabBar({
   setCurrentTab,
@@ -8,9 +9,9 @@ export default function TabBar({
   const [activeTab, setActiveTab] = React.useState<tabType>("map");
 
   const tabs = [
-    { id: "map", label: "Map", icon: "🗺️" },
-    { id: "users", label: "Users", icon: "👤" },
-    { id: "chat", label: "Chat", icon: "💬" },
+    { id: "map", label: "Map", icon: <Map /> },
+    { id: "users", label: "Users", icon: <User /> },
+    { id: "chat", label: "Chat", icon: <MessageCircleMore /> },
   ] as const;
 
   const handleTabClick = (tabId: tabType) => {
