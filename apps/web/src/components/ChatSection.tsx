@@ -38,7 +38,7 @@ const ChatSection = ({
   };
 
   return (
-    <div className="flex flex-col h-full w-full max-w-5xl bg-slate-100 shadow-lg rounded-2xl">
+    <div className="flex flex-col h-full w-full max-w-3xl bg-slate-100 shadow-lg rounded-2xl mx-auto">
       <div className="py-2 px-4 border-b border-gray-200">
         <h1 className="text-md font-semibold text-gray-800">Chat Here</h1>
       </div>

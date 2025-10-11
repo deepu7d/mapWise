@@ -27,23 +27,21 @@ export default function Navbar({ roomId }: { roomId: string }) {
     }
   };
   return (
-    <div className="text-center w-full h-[5%] max-w-5xl mb-4">
-      <div className="w-full max-w-md flex items-center justify-between gap-x-4 rounded-lg">
-        <p className="text-lg font-bold text-gray-800">MapWise</p>
-        <div className="flex gap-4">
-          <button
-            onClick={handleCopy}
-            className="bg-blue-500 rounded-xl text-white font-bold p-2 hover:bg-blue-600"
-          >
-            {isCopied ? "copied" : <Share2 />}
-          </button>
-          <button
-            onClick={handleExit}
-            className="bg-red-500 p-2 rounded-xl text-white"
-          >
-            <LogOut />
-          </button>
-        </div>
+    <div className="w-full max-w-md flex items-center justify-between rounded-lg p-4">
+      <p className="text-lg font-bold text-gray-800">MapWise</p>
+      <div className="flex gap-4">
+        <button
+          onClick={handleCopy}
+          className="bg-blue-500 rounded-xl text-white font-bold p-2 hover:bg-blue-600"
+        >
+          {isCopied ? "copied" : <Share2 />}
+        </button>
+        <button
+          onClick={handleExit}
+          className="bg-red-500 p-2 rounded-xl text-white"
+        >
+          <LogOut />
+        </button>
       </div>
     </div>
   );

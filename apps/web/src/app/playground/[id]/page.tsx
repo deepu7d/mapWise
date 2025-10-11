@@ -11,6 +11,7 @@ import useSocket from "@/hooks/useSocket";
 import useJoinRoom from "@/hooks/useJoinRoom";
 import Navbar from "@/components/Navbar";
 import TabBar from "@/components/TabBar";
+import MapLibre from "@/components/MapLibre";
 
 export type tabType = "map" | "users" | "chat";
 export default function PlaygroundPage() {
@@ -20,14 +21,14 @@ export default function PlaygroundPage() {
   const [sessionData, setSessionData] = useState<sessionData | null>(null);
   const [currentTab, setCurrentTab] = useState<tabType>("map");
 
-  const Map = useMemo(
-    () =>
-      dynamic(() => import("@/components/Map"), {
-        loading: () => <p className="text-center">A map is loading...</p>,
-        ssr: false,
-      }),
-    []
-  );
+  // const Map = useMemo(
+  //   () =>
+  //     dynamic(() => import("@/components/Map"), {
+  //       loading: () => <p className="text-center">A map is loading...</p>,
+  //       ssr: false,
+  //     }),
+  //   []
+  // );
 
   useEffect(() => {
     const sessionString = sessionStorage.getItem("session-cookie");
@@ -50,18 +51,25 @@ export default function PlaygroundPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center pt-4 px-4 h-dvh overflow-hidden w-full ">
+    <main className="flex h-dvh flex-col items-center overflow-hidden w-full justify-center max-w-xl mx-auto bg-white">
       <Navbar roomId={roomId} />
       <div
         className={`h-full w-full ${currentTab != "map" ? "hidden" : "block"}`}
       >
-        <Map
+        <MapLibre
           destination={{
             name: sessionData.destinationName,
             position: sessionData.destinationPosition,
           }}
           currentUser={sessionData.userId}
         />
+        {/* <Map
+          destination={{
+            name: sessionData.destinationName,
+            position: sessionData.destinationPosition,
+          }}
+          currentUser={sessionData.userId}
+        /> */}
       </div>
       <div
         className={`h-full w-full ${currentTab != "users" ? "hidden" : "block"}`}
