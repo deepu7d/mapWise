@@ -27,7 +27,7 @@ export default function Navbar({ roomId }: { roomId: string }) {
     }
   };
   return (
-    <div className="w-full max-w-md flex items-center justify-between rounded-lg p-4">
+    <div className="w-full flex items-center justify-between rounded-lg p-4">
       <p className="text-lg font-bold text-gray-800">MapWise</p>
       <div className="flex gap-4">
         <button

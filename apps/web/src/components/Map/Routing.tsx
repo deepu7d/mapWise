@@ -3,13 +3,8 @@ import { Layer, Source, useMap } from "@vis.gl/react-maplibre";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { Position, User } from "@repo/types";
-import {
-  addColor,
-  addDistance,
-  addDuration,
-} from "@/redux/features/users/usersSlice";
+import { addDistance, addDuration } from "@/redux/features/users/usersSlice";
 import { usersColor } from "@/helper/constant";
-import { latLng } from "leaflet";
 
 type RoutingProps = {
   user: User;
@@ -44,7 +39,6 @@ export default function LibreRouting({
   const start = user.position;
   const end = destination;
   const dispatch = useAppDispatch();
-  const map = useMap();
   const [fullPath, setFullPath] = useState([]);
   const [visiblePath, setVisiblePath] = useState([]);
   const [initialRouteStats, setInitialRouteStats] = useState<RouteStats | null>(

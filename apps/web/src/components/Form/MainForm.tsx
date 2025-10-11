@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import RoomForm from "@/components/RoomForm";
+import RoomForm from "@/components/Form/RoomForm";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import { Destination, sessionData } from "@repo/types";

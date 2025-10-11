@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import dynamic from "next/dynamic";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import UserCards from "@/components/UserCards";
+import UserCards from "@/components/UserCard/UserCards";
 import ChatSection from "@/components/ChatSection";
 import { sessionData } from "@repo/types";
 import useRoomSession from "@/hooks/useMapSession";
@@ -11,7 +10,7 @@ import useSocket from "@/hooks/useSocket";
 import useJoinRoom from "@/hooks/useJoinRoom";
 import Navbar from "@/components/Navbar";
 import TabBar from "@/components/TabBar";
-import MapLibre from "@/components/MapLibre";
+import MapLibre from "@/components/Map/Map";
 
 export type tabType = "map" | "users" | "chat";
 export default function PlaygroundPage() {

@@ -16,17 +16,16 @@ const Card = ({ index, user, isCurrent }: userCard) => {
   return (
     <li
       className={`
-        ${isCurrent ? "font-bold border-1 border-slate-300" : ""} 
-        ${!user.online ? "bg-gray-300 text-black " : `${userColor.tailwind}`}
+        ${isCurrent ? "font-bold border-1 text-black border-slate-300" : "font-semibold text-slate-900"} 
+        ${!user.online ? "bg-gray-400 text-black " : `${userColor.tailwind}`}
         
-      relative px-4 py-2 rounded-2xl text-slate-800 my-1 w-full max-w-sm text-md shadow-sm shadow-slate-400 mx-auto`}
+      relative px-4 py-2 rounded-xl my-1 w-full max-w-sm text-md shadow-sm shadow-slate-400 mx-auto brightness-130`}
     >
       <h1 className="mb-2">{isCurrent ? "You" : user.name}</h1>
       {user.duration && user.distance ? (
-        <div className="flex gap-4">
-          <span>{formatDuration(user.duration)} away</span>
-
-          <span>{(user.distance / 1000).toFixed(2)} km</span>
+        <div className="flex gap-6">
+          <span>&bull; {formatDuration(user.duration)} away</span>
+          <span>&bull; {(user.distance / 1000).toFixed(2)} km</span>
         </div>
       ) : (
         "Reached"

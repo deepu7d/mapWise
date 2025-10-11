@@ -1,4 +1,4 @@
-import MainForm from "@/components/MainForm";
+import MainForm from "@/components/Form/MainForm";
 import { Suspense } from "react";
 
 // A simple loading component to show as a fallback
