@@ -19,7 +19,7 @@ const Card = ({ index, user, isCurrent }: userCard) => {
         ${isCurrent ? "font-bold border-1 text-black border-slate-300" : "font-semibold text-slate-900"} 
         ${!user.online ? "bg-gray-400 text-black " : `${userColor.tailwind}`}
         
-      relative px-4 py-2 rounded-xl my-1 w-full max-w-sm text-md shadow-sm shadow-slate-400 mx-auto brightness-130`}
+      relative px-4 py-2 rounded-xl my-1 w-full max-w-sm text-md shadow-sm shadow-slate-400 mx-auto`}
     >
       <h1 className="mb-2">{isCurrent ? "You" : user.name}</h1>
       {user.duration && user.distance ? (

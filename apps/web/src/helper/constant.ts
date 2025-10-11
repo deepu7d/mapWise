@@ -1,11 +1,14 @@
 export const cookieName = "roomData";
 
 export const usersColor = [
-  { tailwind: "bg-blue-400", hex: "#3b82f6" },
-  { tailwind: "bg-green-400", hex: "#22c55e" },
-  { tailwind: "bg-yellow-400", hex: "#f59e0b" },
-  { tailwind: "bg-violet-400", hex: "#8b5cf6" },
-  { tailwind: "bg-pink-400", hex: "#ec4899" },
-  { tailwind: "bg-red-400", hex: "#ef4444" },
-  { tailwind: "bg-cyan-400", hex: "#06b6d4" },
+  { tailwind: "bg-cyan-300", hex: "#67e8f9" },
+  { tailwind: "bg-rose-300", hex: "#fda4af" },
+  { tailwind: "bg-purple-300", hex: "#d8b4fe" },
+  { tailwind: "bg-teal-300", hex: "#5eead4" },
+  { tailwind: "bg-indigo-300", hex: "#a5b4fc" },
+  { tailwind: "bg-amber-300", hex: "#fcd34d" },
+  { tailwind: "bg-emerald-300", hex: "#6ee7b7" },
+  { tailwind: "bg-orange-300", hex: "#fdba74" },
+  { tailwind: "bg-blue-300", hex: "#93c5fd" },
+  { tailwind: "bg-fuchsia-300", hex: "#f0abfc" },
 ];
