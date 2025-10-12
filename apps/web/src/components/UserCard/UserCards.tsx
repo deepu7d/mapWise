@@ -13,7 +13,7 @@ const UserCards = ({ currentSocketId }: UserCardsProps) => {
   const users = useAppSelector((state) => state.users);
 
   return (
-    <div className="w-full rounded-lg max-w-5xl no-select no-highlight">
+    <div className="w-full rounded-lg max-w-5xl no-select no-highlight overflow-x-auto h-full">
       {users.length > 0 ? (
         <ul className="flex flex-wrap gap-2 ">
           {users.map((user, index) => {

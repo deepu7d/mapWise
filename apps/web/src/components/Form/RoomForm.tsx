@@ -139,7 +139,7 @@ export default function RoomForm({
               </ul>
             )}
           </div>
-        ) : !roomId ? (
+        ) : (
           <div>
             <label
               htmlFor="roomId"
@@ -157,8 +157,6 @@ export default function RoomForm({
               required
             />
           </div>
-        ) : (
-          ""
         )}
 
         <button

@@ -34,7 +34,7 @@ export default function MapLibre({
     map.flyTo({
       center: [user.position[1], user.position[0]],
       zoom: 15,
-      duration: 3000,
+      duration: 1500,
     });
   };
 
@@ -77,11 +77,11 @@ export default function MapLibre({
               >
                 <UserIcon color={colorHex} />
               </Marker>
-              <LibreRouting
+              {/* <LibreRouting
                 user={user}
                 destination={destination.position}
                 index={index}
-              />
+              /> */}
             </Fragment>
           );
         })}

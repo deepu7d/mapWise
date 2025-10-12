@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { Message, sessionData } from "@repo/types";
 import { Socket } from "socket.io-client";
 import useMessageSession from "@/hooks/useMessageSession";
+import { motion } from "motion/react";
 
 const ChatSection = ({
   socket,
@@ -52,7 +53,7 @@ const ChatSection = ({
             (index === 0 || messages[index - 1].userId !== message.userId);
           return (
             <div
-              key={Math.random()}
+              key={message.id}
               className={`flex flex-col ${
                 message.userId == sessionData.userId
                   ? "items-end"

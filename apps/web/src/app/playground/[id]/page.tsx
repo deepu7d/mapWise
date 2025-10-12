@@ -71,16 +71,16 @@ export default function PlaygroundPage() {
         /> */}
       </div>
       <div
-        className={`h-full w-full ${currentTab != "users" ? "hidden" : "block"}`}
+        className={`h-full w-full ${currentTab != "users" ? "hidden" : "block"} overflow-x-auto`}
       >
         <UserCards currentSocketId={sessionData.userId} />
       </div>
       <div
-        className={`h-full w-full ${currentTab != "chat" ? "hidden" : "block"}`}
+        className={`h-full w-full ${currentTab != "chat" ? "hidden" : "block"} overflow-x-auto`}
       >
         <ChatSection socket={socket} sessionData={sessionData} />
       </div>
-      <TabBar setCurrentTab={setCurrentTab} />
+      <TabBar setCurrentTab={setCurrentTab} currentTab={currentTab} />
     </main>
   );
 }
