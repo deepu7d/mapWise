@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import ToastProvider from "./ToastProvider";
+import { ReactScan } from "./ReactScan";
 
 const poppins = Poppins({
   subsets: ["latin"],
