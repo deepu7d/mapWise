@@ -2,6 +2,7 @@
 
 import { Destination } from "@repo/types";
 import { useState, useEffect, FormEvent } from "react";
+import { motion } from "motion/react";
 
 type FormProps = {
   isAdmin: boolean;
@@ -164,7 +165,34 @@ export default function RoomForm({
           disabled={isLoading}
           className="w-full px-4 py-2 font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400"
         >
-          {isLoading ? "Connecting..." : isAdmin ? "Create Room" : "Join Room"}
+          {isLoading ? (
+            <h1 className="flex justify-center items-center gap-2">
+              Connecting
+              <div className="flex gap-2">
+                {[...Array(3)].map((_, index) => (
+                  <motion.div
+                    key={index}
+                    className="text-xl leading-3" // Custom styling for dots
+                    animate={{
+                      opacity: [1, 0],
+                    }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      delay: index * 0.2,
+                    }}
+                  >
+                    .
+                  </motion.div>
+                ))}
+              </div>
+            </h1>
+          ) : isAdmin ? (
+            "Create Room"
+          ) : (
+            "Join Room"
+          )}
         </button>
       </form>
     </div>
