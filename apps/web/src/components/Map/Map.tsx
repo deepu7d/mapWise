@@ -3,10 +3,6 @@ import {
   FullscreenControl,
   Marker,
   NavigationControl,
-  ScaleControl,
-  Source,
-  Layer,
-  GeolocateControl,
   useMap,
   MapRef,
 } from "@vis.gl/react-maplibre";
@@ -26,7 +22,7 @@ export default function MapLibre({
 }: FriendsMapProps) {
   const users = useAppSelector((state) => state.users);
   const mapRef = useRef<MapRef>(null);
-
+  const userContainerRef = useRef<HTMLDivElement>(null);
   const flyToUser = (user: User) => {
     const map = mapRef.current?.getMap();
     if (!map) return;
@@ -39,22 +35,7 @@ export default function MapLibre({
   };
 
   return (
-    <div className="relative h-full w-full">
-      <div className="absolute top-0 left-0 z-9999 flex gap-2 p-2">
-        {users.map((user, index) => {
-          const colorTailwind = usersColor[index % usersColor.length].tailwind;
-          return (
-            <button
-              key={user.id}
-              onClick={() => flyToUser(user)}
-              className={`${colorTailwind} w-10 h-10 rounded-full font-semibold text-slate-800`}
-            >
-              {user.name[0].toUpperCase()}
-            </button>
-          );
-        })}
-      </div>
-
+    <div className="h-full w-full relative">
       <Map
         ref={mapRef}
         initialViewState={{
@@ -63,6 +44,7 @@ export default function MapLibre({
           zoom: 15,
         }}
         mapStyle="https://tiles.openfreemap.org/styles/positron"
+        attributionControl={false}
       >
         <MapController users={users} destination={destination} />
 
@@ -77,11 +59,11 @@ export default function MapLibre({
               >
                 <UserIcon color={colorHex} />
               </Marker>
-              {/* <LibreRouting
+              <LibreRouting
                 user={user}
                 destination={destination.position}
                 index={index}
-              /> */}
+              />
             </Fragment>
           );
         })}
@@ -106,10 +88,26 @@ export default function MapLibre({
             <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
           </svg>
         </Marker>
-
         <FullscreenControl position="top-right" />
         <NavigationControl position="top-right" />
       </Map>
+      <div
+        className="flex gap-2 p-2 overflow-y-auto w-full absolute bottom-0 left-0"
+        ref={userContainerRef}
+      >
+        {users.map((user, index) => {
+          const colorTailwind = usersColor[index % usersColor.length].tailwind;
+          return (
+            <button
+              key={user.id}
+              onClick={() => flyToUser(user)}
+              className={`${colorTailwind} w-10 h-10 rounded-full font-semibold text-slate-800 flex-shrink-0 flex items-center justify-center`}
+            >
+              {user.name[0].toUpperCase()}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
