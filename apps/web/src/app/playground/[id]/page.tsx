@@ -11,6 +11,7 @@ import useJoinRoom from "@/hooks/useJoinRoom";
 import Navbar from "@/components/Navbar";
 import TabBar from "@/components/TabBar";
 import MapLibre from "@/components/Map/Map";
+import { motion, useTransform } from "motion/react";
 
 export type tabType = "map" | "users" | "chat";
 export default function PlaygroundPage() {
@@ -19,15 +20,6 @@ export default function PlaygroundPage() {
 
   const [sessionData, setSessionData] = useState<sessionData | null>(null);
   const [currentTab, setCurrentTab] = useState<tabType>("map");
-
-  // const Map = useMemo(
-  //   () =>
-  //     dynamic(() => import("@/components/Map"), {
-  //       loading: () => <p className="text-center">A map is loading...</p>,
-  //       ssr: false,
-  //     }),
-  //   []
-  // );
 
   useEffect(() => {
     const sessionString = sessionStorage.getItem("session-cookie");
@@ -52,7 +44,9 @@ export default function PlaygroundPage() {
   return (
     <main className="flex h-dvh flex-col items-center overflow-hidden w-full justify-center max-w-xl mx-auto bg-white">
       <Navbar roomId={roomId} />
-      <div
+      <motion.div
+        animate={currentTab === "map" ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.3 }}
         className={`h-full w-full ${currentTab != "map" ? "hidden" : "block"}`}
       >
         <MapLibre
@@ -62,24 +56,21 @@ export default function PlaygroundPage() {
           }}
           currentUser={sessionData.userId}
         />
-        {/* <Map
-          destination={{
-            name: sessionData.destinationName,
-            position: sessionData.destinationPosition,
-          }}
-          currentUser={sessionData.userId}
-        /> */}
-      </div>
-      <div
+      </motion.div>
+      <motion.div
+        animate={currentTab === "users" ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.5 }}
         className={`h-full w-full ${currentTab != "users" ? "hidden" : "block"} overflow-x-auto`}
       >
         <UserCards currentSocketId={sessionData.userId} />
-      </div>
-      <div
+      </motion.div>
+      <motion.div
+        animate={currentTab === "chat" ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.5 }}
         className={`h-full w-full ${currentTab != "chat" ? "hidden" : "block"} overflow-x-auto`}
       >
         <ChatSection socket={socket} sessionData={sessionData} />
-      </div>
+      </motion.div>
       <TabBar setCurrentTab={setCurrentTab} currentTab={currentTab} />
     </main>
   );
