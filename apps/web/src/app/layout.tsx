@@ -28,6 +28,7 @@ export default function RootLayout({
           <ToastProvider />
         </StoreProvider>
       </body>
+      {/* <ReactScan /> */}
     </html>
   );
 }
