@@ -7,7 +7,7 @@ export default function Navbar({ roomId }: { roomId: string }) {
   const handleCopy = () => {
     const websiteUrl =
       typeof window !== "undefined" ? window.location.origin : "";
-    const link = `${websiteUrl}?roomId=${roomId}`;
+    const link = `${websiteUrl}/form/?roomId=${roomId}`;
     navigator.clipboard
       .writeText(link)
       .then(() => {
@@ -23,7 +23,7 @@ export default function Navbar({ roomId }: { roomId: string }) {
   const handleExit = () => {
     if (window.confirm("Are you sure you want to exit?")) {
       sessionStorage.clear();
-      redirect("/");
+      redirect("/form");
     }
   };
   return (

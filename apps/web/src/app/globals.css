@@ -1,11 +1,5 @@
 @import "tailwindcss";
 
-
-@theme {
-
-
-}
-
 .leaflet-tooltip-arrow {
   display: none;
 }
@@ -35,7 +29,8 @@ body {
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: oklch(0.2 0 0);
+  background-color: oklch(0.15 0 0);
+
 }
 
 code {
