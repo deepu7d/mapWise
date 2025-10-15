@@ -1,6 +1,28 @@
 import { GithubIcon, LinkedinIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+const features = [
+  {
+    title: "Real-time Maps",
+    description:
+      "Experience the power of real-time mapping with MapWise. Our platform provides dynamic, up-to-the-minute maps that keep you informed and connected.",
+    imageUrl: "/app-images/map.jpeg",
+  },
+  {
+    title: "Real-time User Tracking",
+    description:
+      "Experience the power of real-time user tracking with MapWise. Our platform allows you to monitor user locations and movements in real-time, enhancing engagement and interaction.",
+    imageUrl: "/app-images/users.jpeg",
+  },
+  {
+    title: "Real-time Chat",
+    description:
+      "Experience the power of real-time chat with MapWise. Our platform enables instant communication, allowing users to connect and collaborate seamlessly.",
+    imageUrl: "/app-images/chat.jpeg",
+  },
+];
+
 export default function HomePage() {
   return (
     <main className="text-white absolute inset-0 h-full max-w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_2px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:64px_64px] overflow-x-hidden">
@@ -89,6 +111,7 @@ export default function HomePage() {
           </video>
         </div>
 
+        {/* truested by */}
         <div className="flex w-full flex-col justify-center items-center gap-5 pt-10">
           <h1 className="text-4xl font-bold">Trusted By</h1>
           <ul className="flex gap-4">
@@ -100,53 +123,27 @@ export default function HomePage() {
           </ul>
         </div>
 
-        {/* first feature section */}
-        <div className="flex justify-center items-center w-full gap-10 border-t border-neutral-800 pt-10">
-          <div className="flex flex-col justify-center items-start gap-5 max-w-xs">
-            <h1 className="text-4xl font-bold">Real time Maps</h1>
-            <p className="text-neutral-500 text-lg">
-              Experience the power of real-time mapping with MapWise.
-            </p>
-          </div>
-          <Image
-            width={200}
-            height={300}
-            src="/app-images/map.jpeg"
-            alt="MapWise Logo"
-            className="w-44 lg:w-xs object-cover rounded-2xl "
-          />
-        </div>
-        {/* second feature section */}
-        <div className="flex justify-center items-center w-full gap-10 pt-10">
-          <Image
-            width={200}
-            height={300}
-            src="/app-images/users.jpeg"
-            alt="MapWise Logo"
-            className="w-44 lg:w-xs object-cover rounded-2xl "
-          />
-          <div className="flex flex-col justify-center items-start gap-5 max-w-xs">
-            <h1 className="text-2xl font-bold">Real time Users Tracking</h1>
-            <p className="text-neutral-500 text-lg">
-              Experience the power of real-time user tracking with MapWise.
-            </p>
-          </div>
-        </div>
-        {/* third feature section */}
-        <div className="flex justify-center items-center w-full gap-10 pt-10">
-          <div className="flex flex-col justify-center items-start gap-5 max-w-xs">
-            <h1 className="text-2xl font-bold">Real time Chat</h1>
-            <p className="text-neutral-500 text-lg">
-              Experience the power of real-time chat with MapWise.
-            </p>
-          </div>
-          <Image
-            width={200}
-            height={300}
-            src="/app-images/chat.jpeg"
-            alt="MapWise Logo"
-            className="w-44 lg:w-xs object-cover rounded-2xl "
-          />
+        <div className="flex flex-col gap-10">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className={`flex flex-shrink-0 flex-col lg:flex-row justify-center items-center w-full gap-4 lg:gap-10 pt-10 ${index % 2 !== 0 ? "lg:flex-row-reverse" : ""}`}
+            >
+              <Image
+                width={300}
+                height={300}
+                src={feature.imageUrl}
+                alt={`${feature.title} Image`}
+                className="lg:w-xs object-cover rounded-2xl"
+              />
+              <div className="flex flex-col justify-center items-center gap-5 max-w-xs">
+                <h1 className="text-2xl font-bold ">{feature.title}</h1>
+                <p className="text-neutral-500 text-lg text-center">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       <footer>
