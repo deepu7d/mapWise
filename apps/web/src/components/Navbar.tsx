@@ -7,7 +7,7 @@ export default function Navbar({ roomId }: { roomId: string }) {
   const handleCopy = () => {
     const websiteUrl =
       typeof window !== "undefined" ? window.location.origin : "";
-    const link = `${websiteUrl}/form/?roomId=${roomId}`;
+    const link = `${websiteUrl}/form/?admin=false&roomId=${roomId}`;
     navigator.clipboard
       .writeText(link)
       .then(() => {

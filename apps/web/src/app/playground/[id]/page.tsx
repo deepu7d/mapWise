@@ -42,7 +42,7 @@ export default function PlaygroundPage() {
   }
 
   return (
-    <main className="flex h-dvh flex-col items-center overflow-hidden w-full justify-center max-w-xl mx-auto bg-white">
+    <main className="flex h-dvh flex-col items-center overflow-hidden w-full justify-center max-w-xl mx-auto bg-white border border-gray-200 shadow-md">
       <Navbar roomId={roomId} />
       <motion.div
         animate={currentTab === "map" ? { opacity: 1 } : { opacity: 0 }}
