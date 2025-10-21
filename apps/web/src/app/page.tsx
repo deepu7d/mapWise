@@ -2,8 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
-import { FiGithub } from "react-icons/fi";
-import { FaXTwitter } from "react-icons/fa6";
+import { FiGithub, FiLinkedin } from "react-icons/fi";
 
 const features = [
   {
@@ -38,8 +37,13 @@ export default function HomePage() {
             </a>
           </li>
           <li className="inline-block mx-4 font-medium cursor-pointer hover:text-blue-500">
-            <a href="https://www.twitter.com/in/deepu7d/" target="_blank">
-              <FaXTwitter className="h-5 w-5" />
+            <a
+              href="https://www.linkedin.com/in/deepanshu-s-61825824a
+            "
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FiLinkedin className="h-5 w-5" />
             </a>
           </li>
         </ul>
