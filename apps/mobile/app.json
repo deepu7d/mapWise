@@ -29,12 +29,7 @@
     },
     "plugins": [
       "expo-router",
-      [
-        "@rnmapbox/maps",
-        {
-          "mapboxAccessToken": "45nb5bSKQet6hurel8jK"
-        }
-      ],
+      "@maplibre/maplibre-react-native",
       [
         "expo-splash-screen",
         {
@@ -51,6 +46,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9262e406-1a56-4e83-9d2c-fbbd9d873b2f"
+      }
     }
   }
 }

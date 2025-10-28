@@ -4,6 +4,7 @@ import { Stack } from "expo-router";
 export default function RootLayout() {
   return (
     <Stack
+      initialRouteName="(playground)"
       screenOptions={{
         headerStyle: { backgroundColor: "#bfdbfe" },
         headerTintColor: "black",
@@ -14,12 +15,6 @@ export default function RootLayout() {
         name="(playground)"
         options={{
           title: "Playground",
-        }}
-      />
-      <Stack.Screen
-        name="index"
-        options={{
-          title: "Home",
         }}
       />
     </Stack>

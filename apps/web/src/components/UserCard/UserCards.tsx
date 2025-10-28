@@ -2,7 +2,7 @@
 
 import React from "react";
 import Card from "./Card";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppSelector } from "@repo/store";
 import { Tooltip } from "react-tooltip";
 
 type UserCardsProps = {

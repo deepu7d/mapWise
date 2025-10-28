@@ -3,12 +3,14 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(2, { message: "Name must be at least 2 character long" }),
-  roomId: z.string().min(10, { message: "Enter valid room ID" }),
+    .min(2, { message: "Name must be at least 2 character long" })
+    .optional(),
+  roomId: z.string().min(10, { message: "Enter valid room ID" }).optional(),
 });
 
 type formSchemaType = z.infer<typeof formSchema>;
@@ -21,7 +23,9 @@ export default function JoinForm() {
   } = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
   });
-  const onSubmit = (data: formSchemaType) => console.log(data);
+  const handleFormSubmit = (data: formSchemaType) => {
+    router.navigate("/(playground)/chat");
+  };
   return (
     <View className="bg-white px-10 py-8 gap-8 shadow-md shadow-slate-400">
       <Text className="text-3xl font-bold self-center">Join Room</Text>
@@ -63,7 +67,7 @@ export default function JoinForm() {
         )}
       </View>
 
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Button title="Submit" onPress={handleSubmit(handleFormSubmit)} />
     </View>
   );
 }

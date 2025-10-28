@@ -5,13 +5,11 @@ import { useParams } from "next/navigation";
 import UserCards from "@/components/UserCard/UserCards";
 import ChatSection from "@/components/ChatSection";
 import { sessionData } from "@repo/types";
-import useRoomSession from "@/hooks/useMapSession";
-import useSocket from "@/hooks/useSocket";
-import useJoinRoom from "@/hooks/useJoinRoom";
+import { useSocket, useRoomSession, useJoinRoom } from "@repo/hooks";
 import Navbar from "@/components/Navbar";
 import TabBar from "@/components/TabBar";
 import MapLibre from "@/components/Map/Map";
-import { motion, useTransform } from "motion/react";
+import { motion } from "motion/react";
 
 export type tabType = "map" | "users" | "chat";
 export default function PlaygroundPage() {

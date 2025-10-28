@@ -1,8 +1,8 @@
 // In app/hooks/useSocket.ts
-import { useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
+import { useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
-const useSocket = (uri: string) => {
+export const useSocket = (uri: string): Socket | null => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
@@ -18,5 +18,3 @@ const useSocket = (uri: string) => {
 
   return socket;
 };
-
-export default useSocket;

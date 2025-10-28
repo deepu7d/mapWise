@@ -13,6 +13,8 @@
     "@maptiler/sdk": "^3.8.0",
     "@reduxjs/toolkit": "^2.8.2",
     "@repo/types": "workspace:*",
+    "@repo/hooks": "workspace:*",
+    "@repo/store": "workspace:*",
     "@vis.gl/react-maplibre": "^8.1.0",
     "axios": "^1.11.0",
     "clsx": "^2.1.1",

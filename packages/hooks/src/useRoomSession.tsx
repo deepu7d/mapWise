@@ -2,20 +2,17 @@
 
 import { useEffect, useRef } from "react";
 import { sessionData, User } from "@repo/types";
-import {
-  addUser,
-  updateUserPosition,
-  userOffline,
-} from "@/redux/features/users/usersSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import toast from "react-hot-toast";
+import { addUser, updateUserPosition, userOffline } from "@repo/store";
+
+import { useAppDispatch } from "@repo/store";
+// import toast from "react-hot-toast";
 import { Socket } from "socket.io-client";
 
-export default function useRoomSession(
+export function useRoomSession(
   sessionData: sessionData | null,
   roomId: string,
   socket: Socket | null
-) {
+): Socket | null {
   const dispatch = useAppDispatch();
 
   const currentPositionRef = useRef<[number, number] | null>(null);
@@ -28,18 +25,18 @@ export default function useRoomSession(
     };
 
     const handleNewUser = (newUser: User) => {
-      toast(
-        <span>
-          <span className="font-bold">
-            {newUser.id == sessionData.userId ? "You" : newUser.name}
-          </span>{" "}
-          Joined
-        </span>,
-        {
-          icon: "🧑🏻",
-          className: "border border-solid border-black p-4 rounded-md bg-white",
-        }
-      );
+      // toast(
+      //   <span>
+      //     <span className="font-bold">
+      //       {newUser.id == sessionData.userId ? "You" : newUser.name}
+      //     </span>{" "}
+      //     Joined
+      //   </span>,
+      //   {
+      //     icon: "🧑🏻",
+      //     className: "border border-solid border-black p-4 rounded-md bg-white",
+      //   }
+      // );
       dispatch(addUser(newUser));
     };
 
@@ -57,15 +54,15 @@ export default function useRoomSession(
       id: string;
       username: string;
     }) => {
-      toast(
-        <span>
-          <span className="font-bold">{username}</span> Offline
-        </span>,
-        {
-          icon: "☹️",
-          className: "border border-solid border-black p-4 rounded-md bg-white",
-        }
-      );
+      // toast(
+      //   <span>
+      //     <span className="font-bold">{username}</span> Offline
+      //   </span>,
+      //   {
+      //     icon: "☹️",
+      //     className: "border border-solid border-black p-4 rounded-md bg-white",
+      //   }
+      // );
       dispatch(userOffline({ id }));
     };
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import StoreProvider from "./StoreProvider";
+import { StoreProvider } from "@repo/store";
 import ToastProvider from "./ToastProvider";
 import { ReactScan } from "./ReactScan";
 

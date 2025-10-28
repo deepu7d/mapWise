@@ -1,0 +1,30 @@
+{
+  "name": "@repo/hooks",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "npm run build -- --watch",
+    "lint": "eslint . --ext .ts,.tsx",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-next": "15.5.0",
+    "@repo/typescript-config": "workspace:*",
+    "@types/react": "^19.1.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@repo/types": "workspace:*",
+    "@repo/store": "workspace:*",
+    "socket.io-client": "^4.8.1"
+  },
+  "peerDependencies": {
+    "react": "*"
+  }
+}

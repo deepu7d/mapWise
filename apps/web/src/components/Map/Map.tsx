@@ -7,7 +7,7 @@ import {
   MapRef,
 } from "@vis.gl/react-maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppSelector } from "@repo/store";
 import { usersColor } from "@/helper/constant";
 import { Destination, User } from "@repo/types";
 import LibreRouting from "./Routing";

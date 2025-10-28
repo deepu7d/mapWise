@@ -2,7 +2,7 @@ import { sessionData } from "@repo/types";
 import { useEffect } from "react";
 import { Socket } from "socket.io-client";
 
-export default function useJoinRoom(
+export function useJoinRoom(
   socket: Socket | null,
   sessionData: sessionData | null
 ) {

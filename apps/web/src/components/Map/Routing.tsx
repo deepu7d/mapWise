@@ -1,9 +1,9 @@
 "use client";
-import { Layer, Source, useMap } from "@vis.gl/react-maplibre";
+import { Layer, Source } from "@vis.gl/react-maplibre";
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch } from "@repo/store";
 import { Position, User } from "@repo/types";
-import { addDistance, addDuration } from "@/redux/features/users/usersSlice";
+import { addDistance, addDuration } from "@repo/store";
 import { usersColor } from "@/helper/constant";
 
 type RoutingProps = {

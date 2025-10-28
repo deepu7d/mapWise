@@ -2,8 +2,7 @@ import { SendHorizontal } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import { Message, sessionData } from "@repo/types";
 import { Socket } from "socket.io-client";
-import useMessageSession from "@/hooks/useMessageSession";
-import { motion } from "motion/react";
+import { useMessageSession } from "@repo/hooks";
 
 const ChatSection = ({
   socket,
