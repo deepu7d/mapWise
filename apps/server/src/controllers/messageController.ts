@@ -3,6 +3,7 @@ import { prisma } from "../prisma";
 import { Message } from "@repo/types";
 
 export const getMessages = async (req: Request, res: Response) => {
+  console.log("remove this");
   const { roomId } = req.params;
   try {
     const allRoomMessages = await prisma.message.findMany({
