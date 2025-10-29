@@ -16,6 +16,8 @@ export default function PlaygroundPage() {
   const params = useParams<{ id: string }>();
   const roomId = params.id;
 
+  console.log("testing turbo");
+
   const [sessionData, setSessionData] = useState<sessionData | null>(null);
   const [currentTab, setCurrentTab] = useState<tabType>("map");
 
