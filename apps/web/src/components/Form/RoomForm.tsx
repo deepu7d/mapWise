@@ -73,7 +73,7 @@ export default function RoomForm({
       if (name && selectedDestination) {
         onSubmit({ name, destination: selectedDestination });
       } else {
-        alert("Please enter your name and select a destination.");
+        alert("Please select a destination.");
       }
     } else {
       if (name && roomId) {
