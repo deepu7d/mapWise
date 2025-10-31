@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { prisma } from "../prisma";
-import { Message, sessionData, User } from "@repo/types";
+import { Message, OsrmApiResponse, User } from "@repo/types";
 
 export function roomHandler(io: Server, socket: Socket) {
   const joinRoom = async ({ userId, roomId }: any) => {
@@ -31,6 +31,7 @@ export function roomHandler(io: Server, socket: Socket) {
         name: user.name,
         position: [user.position[0], user.position[1]],
         online: user.online,
+        routeData: user.routeData as unknown as OsrmApiResponse,
       }));
       socket.emit("currentUsers", formattedUsers);
 
@@ -39,6 +40,7 @@ export function roomHandler(io: Server, socket: Socket) {
         name: newUser.name,
         position: [newUser.position[0], newUser.position[1]],
         online: newUser.online,
+        routeData: newUser.routeData as unknown as OsrmApiResponse,
       });
 
       const messagesInRoom: Message[] = await prisma.message.findMany({

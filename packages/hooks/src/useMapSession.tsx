@@ -8,7 +8,7 @@ import { useAppDispatch } from "@repo/store";
 // import toast from "react-hot-toast";
 import { Socket } from "socket.io-client";
 
-export function useRoomSession(
+export function useMapSession(
   sessionData: sessionData | null,
   roomId: string,
   socket: Socket | null
@@ -21,6 +21,7 @@ export function useRoomSession(
     if (!socket || !sessionData) return;
 
     const handleCurrentUsers = (currentUsers: User[]) => {
+      console.log("Received current users:", currentUsers);
       currentUsers.map((user: User) => dispatch(addUser(user)));
     };
 

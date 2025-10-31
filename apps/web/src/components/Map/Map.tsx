@@ -59,11 +59,7 @@ export default function MapLibre({
               >
                 <UserIcon color={colorHex} />
               </Marker>
-              <LibreRouting
-                user={user}
-                destination={destination.position}
-                index={index}
-              />
+              <LibreRouting user={user} index={index} />
             </Fragment>
           );
         })}

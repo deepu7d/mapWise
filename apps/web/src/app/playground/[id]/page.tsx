@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import UserCards from "@/components/UserCard/UserCards";
 import ChatSection from "@/components/ChatSection";
 import { sessionData } from "@repo/types";
-import { useSocket, useRoomSession, useJoinRoom } from "@repo/hooks";
+import { useSocket, useMapSession, useJoinRoom } from "@repo/hooks";
 import Navbar from "@/components/Navbar";
 import TabBar from "@/components/TabBar";
 import MapLibre from "@/components/Map/Map";
@@ -29,7 +29,7 @@ export default function PlaygroundPage() {
   const socket = useSocket(process.env.NEXT_PUBLIC_API_BASE_URL || "");
 
   useJoinRoom(socket, sessionData);
-  useRoomSession(sessionData, roomId, socket);
+  useMapSession(sessionData, roomId, socket);
 
   if (!sessionData || !socket) {
     return (

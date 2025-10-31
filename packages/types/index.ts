@@ -16,6 +16,7 @@ export type User = {
     hex: string;
   };
   online: boolean;
+  routeData: OsrmApiResponse;
 };
 
 export type Message = {
@@ -33,3 +34,87 @@ export type sessionData = {
   destinationPosition: Position;
   destinationName: string;
 };
+
+export interface OsrmApiResponse {
+  code:
+    | "Ok"
+    | "NoRoute"
+    | "NoSegment"
+    | "InvalidQuery"
+    | "ProfileNotFound"
+    | "TooBig";
+
+  routes: OsrmRoute[];
+
+  waypoints: OsrmWaypoint[];
+
+  [key: string]: any;
+}
+
+export interface OsrmRoute {
+  geometry: {
+    type: "LineString";
+    coordinates: [number, number][];
+  };
+
+  legs: OsrmLeg[];
+
+  weight_name: string;
+
+  weight: number;
+
+  duration: number;
+
+  distance: number;
+}
+
+export interface OsrmLeg {
+  steps: OsrmStep[];
+
+  summary: string;
+
+  weight: number;
+
+  duration: number;
+
+  distance: number;
+}
+
+export interface OsrmStep {
+  maneuver: OsrmManeuver;
+
+  name: string;
+
+  geometry: {
+    type: "LineString";
+    coordinates: [number, number][];
+  };
+
+  duration: number;
+
+  distance: number;
+
+  weight: number;
+}
+
+export interface OsrmManeuver {
+  location: [number, number];
+
+  bearing_before: number;
+
+  bearing_after: number;
+
+  type: string;
+
+  modifier?: string;
+}
+
+export interface OsrmWaypoint {
+  hint: string;
+
+  distance: number;
+
+  name: string;
+
+  location: [number, number];
+}

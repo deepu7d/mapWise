@@ -14,14 +14,13 @@ datasource db {
 }
 
 model Room {
-  id                  String   @id @unique @default(cuid())
+  id                  String    @id @unique @default(cuid())
   destinationName     String
   destinationPosition Float[]
-  createdAt           DateTime @default(now())
-
+  createdAt           DateTime  @default(now())
   //relations 
-  users    User[]
-  messages Message[]
+  users               User[]
+  messages            Message[]
 }
 
 model User {
@@ -30,6 +29,7 @@ model User {
   createdAt DateTime @default(now())
   position  Float[]
   online    Boolean  @default(false)
+  routeData Json
 
   // relations
   room     Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)

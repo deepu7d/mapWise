@@ -8,7 +8,6 @@ import { usersColor } from "@/helper/constant";
 
 type RoutingProps = {
   user: User;
-  destination: Position;
   index: number;
 };
 type RouteStats = {
@@ -31,16 +30,10 @@ type RouteStats = {
 //   },
 // } as const;
 
-export default function LibreRouting({
-  user,
-  destination,
-  index,
-}: RoutingProps) {
-  const start = user.position;
-  const end = destination;
+export default function LibreRouting({ user, index }: RoutingProps) {
   const dispatch = useAppDispatch();
-  const [fullPath, setFullPath] = useState([]);
-  const [visiblePath, setVisiblePath] = useState([]);
+  const [fullPath, setFullPath] = useState<Position[]>([]);
+  const [visiblePath, setVisiblePath] = useState<Position[]>([]);
   const [initialRouteStats, setInitialRouteStats] = useState<RouteStats | null>(
     null
   );
@@ -64,32 +57,21 @@ export default function LibreRouting({
 
   useEffect(() => {
     const fetchRoute = () => {
-      console.log("calling OSRM warning......");
-      const url = `https://router.project-osrm.org/route/v1/driving/${start[1]},${start[0]};${end[1]},${end[0]}?overview=full&geometries=geojson`;
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.routes && data.routes.length > 0) {
-            const routeData = data.routes[0];
-            const coordinates = routeData.geometry.coordinates.map(
-              (coord: [number, number]) =>
-                [coord[0], coord[1]] as [number, number]
-            );
-            setFullPath(coordinates);
-            setVisiblePath(coordinates);
-            setInitialRouteStats({
-              distance: routeData.distance,
-              duration: routeData.duration,
-            });
-            dispatch(
-              addDistance({ id: user.id, distance: routeData.distance })
-            );
-            dispatch(
-              addDuration({ id: user.id, duration: routeData.duration })
-            );
-          }
-        })
-        .catch((err) => console.error("Error fetching route:", err));
+      const data = user.routeData;
+      if (data.routes && data.routes.length > 0) {
+        const routeData = data.routes[0];
+        const coordinates = routeData.geometry.coordinates.map(
+          (coord: [number, number]) => [coord[0], coord[1]] as [number, number]
+        );
+        setFullPath(coordinates);
+        setVisiblePath(coordinates);
+        setInitialRouteStats({
+          distance: routeData.distance,
+          duration: routeData.duration,
+        });
+        dispatch(addDistance({ id: user.id, distance: routeData.distance }));
+        dispatch(addDuration({ id: user.id, duration: routeData.duration }));
+      }
     };
     fetchRoute();
   }, []);
