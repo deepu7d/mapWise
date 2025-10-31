@@ -77,9 +77,7 @@ export default function MainForm() {
           errorMessage = axiosError.message;
         }
 
-        toast.error(errorMessage, {
-          duration: 1000,
-        });
+        toast.error(errorMessage);
         console.error("An error occurred during API request:", axiosError);
       }
     } catch (geoError) {
