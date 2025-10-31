@@ -3,9 +3,7 @@
 import { useEffect, useRef } from "react";
 import { sessionData, User } from "@repo/types";
 import { addUser, updateUserPosition, userOffline } from "@repo/store";
-
 import { useAppDispatch } from "@repo/store";
-import toast from "react-hot-toast";
 import { Socket } from "socket.io-client";
 
 export function useMapSession(
