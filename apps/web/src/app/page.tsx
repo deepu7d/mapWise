@@ -30,23 +30,11 @@ export default function HomePage() {
     <main className="text-neutral-800 absolute inset-0 h-full max-w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_2px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:64px_64px] overflow-x-hidden">
       <div className="flex justify-between items-center p-4 lg:px-10">
         <h1 className="text-3xl font-bold ">MapWise</h1>
-        <ul>
-          <li className="inline-block mx-4 font-medium cursor-pointer hover:text-blue-500">
-            <a href="https://github.com/deepu7d" target="_blank">
-              <FiGithub className="h-5 w-5" />
-            </a>
-          </li>
-          <li className="inline-block mx-4 font-medium cursor-pointer hover:text-blue-500">
-            <a
-              href="https://www.linkedin.com/in/deepanshu-s-61825824a
-            "
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FiLinkedin className="h-5 w-5" />
-            </a>
-          </li>
-        </ul>
+        <Link href={"/form?admin=false"}>
+          <button className="bg-green-400 text-white p-2 px-4 rounded-2xl shadow-md  cursor-pointer hover:bg-green-500 transition-colors duration-300">
+            Join Room
+          </button>
+        </Link>
       </div>
       {/* main content wrapper */}
       <div className="max-w-7xl mx-auto flex flex-col gap-20 justify-center items-center px-4 py-5">
