@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../prisma";
-import { User } from "@repo/types";
+import { OsrmApiResponse, User } from "@repo/types";
 
 export const getUser = async (req: Request, res: Response) => {
   const { roomId } = req.params;
@@ -14,6 +14,7 @@ export const getUser = async (req: Request, res: Response) => {
       name: user.name,
       position: [user.position[0], user.position[1]],
       online: user.online,
+      routeData: user.routeData as unknown as OsrmApiResponse,
     }));
 
     res.status(200).json(formattedUsers);
