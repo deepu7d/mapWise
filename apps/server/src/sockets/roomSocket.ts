@@ -54,6 +54,8 @@ export function roomHandler(io: Server, socket: Socket) {
   const disconnect = async () => {
     const id = socket.data.id;
     const roomId = socket.data.roomId;
+    const lastPosition = socket.data.lastPosition;
+    if (!id || !roomId) return;
     try {
       const disconnectedUser = await prisma.user.update({
         where: {
@@ -61,6 +63,7 @@ export function roomHandler(io: Server, socket: Socket) {
         },
         data: {
           online: false,
+          position: lastPosition,
         },
       });
 

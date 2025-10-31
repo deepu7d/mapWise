@@ -12,16 +12,8 @@ export function locationHandler(io: Server, socket: Socket) {
   }) => {
     const { roomId } = socket.data;
     if (!roomId) return;
-    // const newPosition = [position[0] + 0.01, position[1] - 0.01];
+    socket.data.lastPosition = position;
     try {
-      // await prisma.user.update({
-      //   where: { id: userId }, // todo
-      //   data: {
-      //     position: position,
-      //   },
-      // });
-      // console.log(position);
-      // console.log(newPosition);
       const userData = { id: userId, position: position };
       socket.to(roomId).emit("location-update", userData);
     } catch (error) {
