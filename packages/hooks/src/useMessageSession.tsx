@@ -1,32 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Message, sessionData } from "@repo/types";
 import { Socket } from "socket.io-client";
-// import toast from "react-hot-toast";
 import { sortMessages } from "./helper/index";
 
 export function useMessageSession(
   socket: Socket | null,
-  sessionData: sessionData
+  sessionData: sessionData,
+  messageToast: ({ data }: { data: Message }) => void
 ) {
   const [messages, setMessages] = useState<Message[]>([]);
   useEffect(() => {
     if (!socket) return;
     const handleReceiveMessage = (data: Message) => {
-      // toast(
-      //   <span>
-      //     {data.userId === sessionData.userId ? (
-      //       "Message Sent"
-      //     ) : (
-      //       <>
-      //         <span className="font-bold">{data.username}</span> sent Message
-      //       </>
-      //     )}
-      //   </span>,
-      //   {
-      //     icon: "🗨️",
-      //     className: "border border-solid border-black p-4 rounded-md bg-white",
-      //   }
-      // );
+      messageToast({ data });
       setMessages((prev) => [...prev, data]);
     };
     const handleCurrentMessages = (data: Message[]) => {

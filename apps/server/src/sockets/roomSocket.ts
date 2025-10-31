@@ -70,11 +70,7 @@ export function roomHandler(io: Server, socket: Socket) {
       });
 
       console.log("User offline: ", disconnectedUser.name);
-      const payload = {
-        id: disconnectedUser.id,
-        username: disconnectedUser.name,
-      };
-      io.to(roomId).emit("user-disconneted", payload);
+      io.to(roomId).emit("user-disconneted", disconnectedUser);
     } catch (error) {
       console.log("Error disconnecting user:", id);
     }

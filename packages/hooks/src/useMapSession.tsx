@@ -5,13 +5,15 @@ import { sessionData, User } from "@repo/types";
 import { addUser, updateUserPosition, userOffline } from "@repo/store";
 
 import { useAppDispatch } from "@repo/store";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 import { Socket } from "socket.io-client";
 
 export function useMapSession(
   sessionData: sessionData | null,
   roomId: string,
-  socket: Socket | null
+  socket: Socket | null,
+  userOnlineToast: ({ newUser }: { newUser: User }) => void,
+  userOfflineToast: ({ username }: { username: string }) => void
 ): Socket | null {
   const dispatch = useAppDispatch();
 
@@ -26,18 +28,7 @@ export function useMapSession(
     };
 
     const handleNewUser = (newUser: User) => {
-      // toast(
-      //   <span>
-      //     <span className="font-bold">
-      //       {newUser.id == sessionData.userId ? "You" : newUser.name}
-      //     </span>{" "}
-      //     Joined
-      //   </span>,
-      //   {
-      //     icon: "🧑🏻",
-      //     className: "border border-solid border-black p-4 rounded-md bg-white",
-      //   }
-      // );
+      userOnlineToast({ newUser });
       dispatch(addUser(newUser));
     };
 
@@ -48,23 +39,9 @@ export function useMapSession(
       dispatch(updateUserPosition(updatedUser));
     };
 
-    const handleUserDisconnected = ({
-      id,
-      username,
-    }: {
-      id: string;
-      username: string;
-    }) => {
-      // toast(
-      //   <span>
-      //     <span className="font-bold">{username}</span> Offline
-      //   </span>,
-      //   {
-      //     icon: "☹️",
-      //     className: "border border-solid border-black p-4 rounded-md bg-white",
-      //   }
-      // );
-      dispatch(userOffline({ id }));
+    const handleUserDisconnected = (disconnetedUser: User) => {
+      userOfflineToast({ username: disconnetedUser.name });
+      dispatch(userOffline({ id: disconnetedUser.id }));
     };
 
     socket.on("currentUsers", handleCurrentUsers);

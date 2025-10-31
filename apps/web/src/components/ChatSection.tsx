@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { Message, sessionData } from "@repo/types";
 import { Socket } from "socket.io-client";
 import { useMessageSession } from "@repo/hooks";
+import toast from "react-hot-toast";
 
 const ChatSection = ({
   socket,
@@ -13,7 +14,26 @@ const ChatSection = ({
 }) => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const messages = useMessageSession(socket, sessionData);
+  const messageToast = ({ data }: { data: Message }) => {
+    console.log("ji");
+    toast(
+      <span>
+        {data.userId === sessionData.userId ? (
+          "Message Sent"
+        ) : (
+          <>
+            <span className="font-bold">{data.username}</span> sent Message
+          </>
+        )}
+      </span>,
+      {
+        icon: "🗨️",
+        className: "border border-solid border-black p-4 rounded-md bg-white",
+      }
+    );
+  };
+
+  const messages = useMessageSession(socket, sessionData, messageToast);
 
   useEffect(() => {
     if (chatContainerRef.current) {

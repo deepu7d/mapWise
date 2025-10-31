@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import UserCards from "@/components/UserCard/UserCards";
 import ChatSection from "@/components/ChatSection";
-import { sessionData } from "@repo/types";
+import { sessionData, User } from "@repo/types";
 import { useSocket, useMapSession, useJoinRoom } from "@repo/hooks";
 import Navbar from "@/components/Navbar";
 import TabBar from "@/components/TabBar";
 import MapLibre from "@/components/Map/Map";
 import { motion } from "motion/react";
+import toast from "react-hot-toast";
 
 export type tabType = "map" | "users" | "chat";
 export default function PlaygroundPage() {
@@ -28,8 +29,35 @@ export default function PlaygroundPage() {
 
   const socket = useSocket(process.env.NEXT_PUBLIC_API_BASE_URL || "");
 
+  const userOnlineToast = ({ newUser }: { newUser: User }) => {
+    toast(
+      <span>
+        <span className="font-bold">
+          {newUser.id == sessionData?.userId ? "You" : newUser.name}
+        </span>{" "}
+        Joined
+      </span>,
+      {
+        icon: "🧑🏻",
+        className: "border border-solid border-black p-4 rounded-md bg-white",
+      }
+    );
+  };
+
+  const userOfflineToast = ({ username }: { username: string }) => {
+    toast(
+      <span>
+        <span className="font-bold">{username}</span> Offline
+      </span>,
+      {
+        icon: "☹️",
+        className: "border border-solid border-black p-4 rounded-md bg-white",
+      }
+    );
+  };
+
   useJoinRoom(socket, sessionData);
-  useMapSession(sessionData, roomId, socket);
+  useMapSession(sessionData, roomId, socket, userOnlineToast, userOfflineToast);
 
   if (!sessionData || !socket) {
     return (
