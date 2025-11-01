@@ -12,3 +12,5 @@ router.use("/", (req, res) => {
 });
 
 export default router;
+
+// pm2 start ecosystem.config.js --env production
