@@ -18,9 +18,6 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
 
           script: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
             # 1. Go to the project directory
             cd /var/www/mapWise
 
@@ -34,9 +31,9 @@ jobs:
             pnpm dlx dotenv-cli -e .env -- pnpm run build --filter=server
 
             # 5. Reload the app with zero downtime
-            pnpm pm2 reload mapwise-server
+            pm2 reload mapwise-server
 
             # 6. Save the process list
-            pnpm pm2 save
+            pm2 save
 
             echo "✅ Deployment successful!"
