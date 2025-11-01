@@ -34,9 +34,9 @@ jobs:
             pnpm dlx dotenv-cli -e .env -- pnpm run build --filter=server
 
             # 5. Reload the app with zero downtime
-            pm2 reload mapwise-server
+            pnpm pm2 reload mapwise-server
 
             # 6. Save the process list
-            pm2 save
+            pnpm pm2 save
 
             echo "✅ Deployment successful!"
