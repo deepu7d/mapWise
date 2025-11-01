@@ -1,0 +1,39 @@
+name: Deploy Server to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+
+          script: |
+            # 1. Go to the project directory
+            cd /var/www/my-project
+
+            # 2. Pull the latest code
+            git pull origin main
+
+            # 3. Install/update dependencies
+            pnpm install
+
+            # 4. Rebuild only your server app and load the turbo remote cache env
+            pnpm dlx dotenv-cli -e .env -- pnpm run build --filter=server
+
+            # 5. Reload the app with zero downtime
+            pm2 reload mapwise-server
+
+            # 6. Save the process list
+            pm2 save
+
+            echo "✅ Deployment successful!"
