@@ -23,6 +23,7 @@ const getRouteData = async (
 };
 
 export const joinRoom = async (req: Request, res: Response) => {
+  console.log("Join room request received");
   const { roomId } = req.params;
   const { username, position }: { username: string; position: Position } =
     req.body;
@@ -85,7 +86,7 @@ export const createRoom = async (req: Request, res: Response) => {
   }: { username: string; destination: Destination; userPosition: Position } =
     req.body;
 
-  console.log("Request came");
+  console.log("Create room request received");
 
   try {
     // atomic transaction
