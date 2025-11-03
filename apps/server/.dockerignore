@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log
+pnpm-debug.log
+.git
+.gitignore
+README.md
+.env
+.env.local
+dist
+.turbo
+coverage
+.DS_Store
+*.log
+src
+tsconfig.json
+prisma/migrations

@@ -1,13 +1,46 @@
-# docker-compose.yml
-
 services:
-  db:
-    image: postgres # Use a specific version for consistency
-    container_name: node_prisma_db
+  # 1. Your Socket.io Server
+  server-app:
+    # This image will be built and pushed by GitHub Actions
+    image: ghcr.io/deepu7d/mapwise-server:latest
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    restart: always
+    environment:
+      # These variables will be pulled from a .env file on your VPS
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: 8000 # The internal port doesn't need to be a variable
+      NODE_ENV: ${NODE_ENV:-production}
+    healthcheck:
+      # This check is the key to zero-downtime
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8000/api"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - internal-network
+
+  # 2. The Nginx Reverse Proxy
+  nginx:
+    image: nginx:1.25-alpine
     restart: always
     ports:
-      - "5432:5432" # Exposes the DB port to your local machine
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydb
+      - "80:80"   # Public HTTP port
+      - "443:443" # Public HTTPS port
+    volumes:
+      # Mount your custom nginx config
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      # You would also mount SSL certs here
+      # - /path/to/your/certs:/etc/letsencrypt
+    depends_on:
+      server-app:
+        condition: service_healthy # Nginx won't start until the server-app is healthy
+    networks:
+      - internal-network
+
+# Define the shared internal network
+networks:
+  internal-network:
+    driver: bridge
