@@ -5,75 +5,41 @@ on:
     branches:
       - main
 
-env:
-  # CHANGE THIS to match your docker-compose.yml
-  IMAGE_NAME: ghcr.io/deepu7d/mapwise-server
-
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write # Needed to push to ghcr.io
-
-    steps:
-      - name: 🚚 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 🔒 Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }} # This token is auto-generated
-
-      - name: 🛠️ Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: 📦 Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          # Path to your Dockerfile from the compose file
-          file: ./apps/server/Dockerfile
-          push: true
-          tags: ${{ env.IMAGE_NAME }}:latest
-          build-args: |
-            TURBO_TEAM=${{ secrets.TURBO_TEAM }}
-            TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
   deploy:
-    # This job waits for the build-and-push job to succeed
-    needs: build-and-push
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🚀 Deploy to VPS via SSH
+      - name: 🚚 Deploy to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+
           script: |
-            # Go to your project directory on the VPS
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+                
+            export PATH="$HOME/.local/share/pnpm:$PATH"
+
+
+            # 1. Go to the project directory
             cd /var/www/mapWise
 
-            # 1. Pull the new image from GHCR
-            # This requires you to be logged into ghcr.io on your VPS (see next section)
-            docker compose pull server-app
+            # 2. Pull the latest code
+            git pull origin main
 
-            # 2. Recreate *only* the server-app container
-            # Docker Compose is smart. It will:
-            # - Stop the *old* container
-            # - Start the *new* container
-            # - Your Nginx `depends_on: service_healthy` config
-            #   will wait for the new container to be healthy
-            #   before routing traffic, ensuring ZERO downtime.
-            docker compose up -d --no-deps server-app
+            # 3. Install/update dependencies
+            pnpm install
 
-            # 3. (Optional) Clean up old, unused images
-            docker image prune -f
+            # 4. Rebuild only your server app and load the turbo remote cache env
+            pnpm dlx dotenv-cli -e .env -- pnpm run build --filter=server
 
-            echo "✅ New Docker image deployed!"
+            # 5. Reload the app with zero downtime
+            pnpm pm2 reload mapwise-server
+
+            # 6. Save the process list
+            pnpm pm2 save
+
+            echo "✅ Deployment successful!"
