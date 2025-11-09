@@ -79,13 +79,15 @@ const ChatSection = ({
                   : "items-start"
               }`}
             >
-              <h1 className="text-xs">{showUsername && message.username}</h1>
+              <h1 className="text-xs truncate max-w-[30%]">
+                {showUsername && message.username}
+              </h1>
               <p
                 className={`${
                   message.userId == sessionData.userId
                     ? "bg-blue-400  rounded-tl-lg rounded-br-lg"
                     : "bg-slate-200  rounded-tr-lg rounded-bl-lg"
-                } text-slate-800 text-md  w-fit max-w-[70%] px-2 py-0.5`}
+                } text-slate-800 text-md  w-fit max-w-[70%] px-2 py-0.5 break-words`}
               >
                 {message.content}
               </p>
