@@ -6,13 +6,13 @@ import { sortMessages } from "./helper/index";
 export function useMessageSession(
   socket: Socket | null,
   sessionData: sessionData,
-  messageToast: ({ data }: { data: Message }) => void
+  messageToast?: ({ data }: { data: Message }) => void
 ) {
   const [messages, setMessages] = useState<Message[]>([]);
   useEffect(() => {
     if (!socket) return;
     const handleReceiveMessage = (data: Message) => {
-      messageToast({ data });
+      messageToast?.({ data });
       setMessages((prev) => [...prev, data]);
     };
     const handleCurrentMessages = (data: Message[]) => {
