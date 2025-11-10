@@ -6,11 +6,22 @@ import {
   PointAnnotation,
   UserLocation,
 } from "@maplibre/maplibre-react-native";
-import { useEffect } from "react";
+import { useMapSession, useSocketContext } from "@repo/hooks";
+import { sessionData } from "@repo/types";
+import { use, useEffect } from "react";
 import { PermissionsAndroid, Platform, View } from "react-native";
 const AMBALA_COORDS = [76.78, 30.38]; // [longitude, latitude]
 const NEARBY_COORDS = [76.8, 30.4];
 export default function Map() {
+  const sessionData: sessionData = {
+    roomId: "cmht0yeau0000m6rloumdy1iw",
+    userId: "cmht0z3ox0004m6rljv6em956",
+    username: "mobile",
+    destinationPosition: [30.357234, 76.7951835],
+    destinationName: "Jandli, Ambala Cantt, Ambala, Haryana, 132004, India",
+  };
+  const contextSocket = useSocketContext();
+  useMapSession(sessionData, sessionData.roomId, contextSocket);
   useEffect(() => {
     const requestLocationPermission = async () => {
       if (Platform.OS === "android") {
