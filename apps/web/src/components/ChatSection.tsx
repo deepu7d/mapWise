@@ -67,7 +67,7 @@ const ChatSection = ({ sessionData }: { sessionData: sessionData }) => {
             <div
               key={message.id}
               className={`flex flex-col ${
-                message.userId == sessionData.userId
+                message.userId === sessionData.userId
                   ? "items-end"
                   : "items-start"
               }`}
