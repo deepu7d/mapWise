@@ -345,6 +345,9 @@ importers:
       '@repo/types':
         specifier: workspace:*
         version: link:../types
+      axios:
+        specifier: ^1.11.0
+        version: 1.12.2
       react:
         specifier: '*'
         version: 19.1.0
