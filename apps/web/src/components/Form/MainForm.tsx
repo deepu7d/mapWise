@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import RoomForm from "@/components/Form/RoomForm";
 import { useRouter, useSearchParams } from "next/navigation";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Destination, sessionData } from "@repo/types";
 import { getCurrentLocation } from "@/helper/helperFunctions";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
+import { handleCreateRoomForm, handleJoinRoomForm } from "@repo/hooks";
 
 type formData = {
   name: string;
@@ -37,25 +38,19 @@ export default function MainForm() {
 
       try {
         if (isAdmin) {
-          response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/room/create-room`,
-            {
-              username: data.name,
-              destination: {
-                name: data.destination?.name,
-                position: data.destination?.position,
-              },
-              userPosition: userPosition,
-            }
-          );
+          response = await handleCreateRoomForm({
+            name: data.name,
+            destination: data.destination!,
+            userPosition: userPosition,
+            apiUrl: process.env.NEXT_PUBLIC_API_BASE_URL!,
+          });
         } else {
-          response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/room/join/${data.roomId}`,
-            {
-              username: data.name,
-              position: userPosition,
-            }
-          );
+          response = await handleJoinRoomForm({
+            name: data.name,
+            roomId: data.roomId!,
+            position: userPosition,
+            apiUrl: process.env.NEXT_PUBLIC_API_BASE_URL!,
+          });
         }
 
         if (response && response.data) {
