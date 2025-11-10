@@ -1,4 +1,4 @@
-export type Position = [latitude: number, longitude: number];
+export type Position = number[]; // [latitude, longitude]
 
 export type Destination = {
   name: string;
