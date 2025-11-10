@@ -4,8 +4,12 @@ import { prisma } from "../prisma";
 
 export function messageHandler(io: Server, socket: Socket) {
   const sendMessage = async ({ content, userId, username }: Message) => {
+    console.log("Message received:", { content, userId });
     const { roomId } = socket.data;
-    if (!roomId) return;
+    if (!roomId) {
+      console.error("No roomId found for socket:", socket.id);
+      return;
+    }
 
     try {
       const message = await prisma.message.create({
