@@ -9,7 +9,6 @@ const ChatSection = ({ sessionData }: { sessionData: sessionData }) => {
   const socket = useSocketContext();
 
   const messageToast = ({ data }: { data: Message }) => {
-    console.log("ji");
     toast(
       <span>
         {data.userId === sessionData.userId ? (
