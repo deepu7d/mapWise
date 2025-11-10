@@ -9,17 +9,53 @@ import {
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useAppSelector } from "@repo/store";
 import { usersColor } from "@/helper/constant";
-import { Destination, User } from "@repo/types";
+import { Destination, sessionData, User } from "@repo/types";
 import LibreRouting from "./Routing";
 import { Fragment, useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
+import { useMapSession, useSocketContext } from "@repo/hooks";
+import toast from "react-hot-toast";
 
-type FriendsMapProps = { destination: Destination; currentUser: string };
+type FriendsMapProps = {
+  sessionData: sessionData;
+};
 
-export default function MapLibre({
-  destination,
-  currentUser,
-}: FriendsMapProps) {
+export default function MapLibre({ sessionData }: FriendsMapProps) {
+  const userOnlineToast = ({ newUser }: { newUser: User }) => {
+    toast(
+      <span>
+        <span className="font-bold">
+          {newUser.id == sessionData?.userId ? "You" : newUser.name}
+        </span>{" "}
+        Joined
+      </span>,
+      {
+        icon: "🧑🏻",
+        className: "border border-solid border-black p-4 rounded-md bg-white",
+      }
+    );
+  };
+
+  const userOfflineToast = ({ username }: { username: string }) => {
+    toast(
+      <span>
+        <span className="font-bold">{username}</span> Offline
+      </span>,
+      {
+        icon: "☹️",
+        className: "border border-solid border-black p-4 rounded-md bg-white",
+      }
+    );
+  };
+  const contextSocket = useSocketContext();
+  useMapSession(
+    sessionData,
+    sessionData.roomId,
+    contextSocket,
+    userOnlineToast,
+    userOfflineToast
+  );
+
   const users = useAppSelector((state) => state.users);
   const mapRef = useRef<MapRef>(null);
   const userContainerRef = useRef<HTMLDivElement>(null);
@@ -39,14 +75,20 @@ export default function MapLibre({
       <Map
         ref={mapRef}
         initialViewState={{
-          latitude: destination.position[0],
-          longitude: destination.position[1],
+          latitude: sessionData.destinationPosition[0],
+          longitude: sessionData.destinationPosition[1],
           zoom: 15,
         }}
         mapStyle="https://tiles.openfreemap.org/styles/positron"
         attributionControl={false}
       >
-        <MapController users={users} destination={destination} />
+        <MapController
+          users={users}
+          destination={{
+            name: sessionData.destinationName,
+            position: sessionData.destinationPosition,
+          }}
+        />
 
         {users.map((user, index) => {
           const colorHex = usersColor[index % usersColor.length].hex;
@@ -65,8 +107,8 @@ export default function MapLibre({
         })}
 
         <Marker
-          latitude={destination.position[0]}
-          longitude={destination.position[1]}
+          latitude={sessionData.destinationPosition[0]}
+          longitude={sessionData.destinationPosition[1]}
           anchor="bottom"
         >
           <svg

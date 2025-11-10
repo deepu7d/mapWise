@@ -1,18 +1,12 @@
 import { SendHorizontal } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import { Message, sessionData } from "@repo/types";
-import { Socket } from "socket.io-client";
-import { useMessageSession } from "@repo/hooks";
+import { useMessageSession, useSocketContext } from "@repo/hooks";
 import toast from "react-hot-toast";
 
-const ChatSection = ({
-  socket,
-  sessionData,
-}: {
-  socket: Socket;
-  sessionData: sessionData;
-}) => {
+const ChatSection = ({ sessionData }: { sessionData: sessionData }) => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const socket = useSocketContext();
 
   const messageToast = ({ data }: { data: Message }) => {
     console.log("ji");
