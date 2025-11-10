@@ -1,22 +1,23 @@
 import "./global.css";
 import { Stack } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   return (
-    <Stack
-      initialRouteName="(playground)"
-      screenOptions={{
-        headerStyle: { backgroundColor: "#bfdbfe" },
-        headerTintColor: "black",
-        headerTitleStyle: { fontWeight: "bold" },
-      }}
-    >
-      <Stack.Screen
-        name="(playground)"
-        options={{
-          title: "Playground",
+    <SafeAreaView style={{ flex: 1 }}>
+      <Stack
+        initialRouteName="(playground)"
+        screenOptions={{
+          headerShown: false,
         }}
-      />
-    </Stack>
+      >
+        <Stack.Screen
+          name="(playground)"
+          options={{
+            title: "Playground",
+          }}
+        />
+      </Stack>
+    </SafeAreaView>
   );
 }

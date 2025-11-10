@@ -8,19 +8,34 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Message } from "@repo/types";
-import { useJoinRoom, useSocket } from "@repo/hooks";
+import { sessionData } from "@repo/types";
+import { useMessageSession, useSocket } from "@repo/hooks";
 
 export default function Chat() {
   const socket = useSocket("https://bfxz3hqs-8000.inc1.devtunnels.ms");
-  console.log("Socket connected:", socket);
+  // console.log("Socket connected:", socket);
+  const sessionData: sessionData = {
+    roomId: "test-room",
+    userId: "user-123",
+    username: "JohnDoe",
+    destinationPosition: [37.7749, -122.4194],
+    destinationName: "San Francisco",
+  };
+  const messages = useMessageSession(socket, sessionData);
   const [messageInput, setMessageInput] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
-  const onSubmit = () => {
-    if (messageInput.trim() === "") return;
-    console.log("Message sent:", messageInput);
+  const handleSubmit = () => {
+    console.log("Submitting message:", messageInput);
+    const message = messageInput.trim();
+    if (message === "") return;
+
+    socket?.emit("send-message", {
+      content: message,
+      userId: sessionData.userId,
+      username: sessionData.username,
+    });
     setMessageInput("");
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -45,7 +60,7 @@ export default function Chat() {
                 className="text-neutral-900 px-4"
               />
             </View>
-            <Button title="Send Message" onPress={onSubmit} />
+            <Button title="Send Message" onPress={handleSubmit} />
           </View>
         </View>
       </KeyboardAvoidingView>

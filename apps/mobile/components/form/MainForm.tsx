@@ -11,7 +11,7 @@ import JoinForm from "./JoinForm";
 import CreateRoom from "./createFrom";
 
 export default function MainForm() {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
