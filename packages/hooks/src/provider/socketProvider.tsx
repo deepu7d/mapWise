@@ -18,7 +18,6 @@ export function SocketProvider({
 }) {
   const socket = useSocket(apiBaseUrl || "");
   useJoinRoom(socket, sessionData);
-
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
