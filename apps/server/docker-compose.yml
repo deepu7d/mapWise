@@ -1,0 +1,24 @@
+services:
+  postgres:
+    # Use the official PostgreSQL image
+    image: postgres:latest
+    container_name: my_postgres_db
+    
+    # Set environment variables to match your DATABASE_URL
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: postgres
+    
+    # Map the host port 5432 to the container port 5432
+    # This allows you to connect via 'localhost:5432'
+    ports:
+      - "5432:5432"
+    
+    # Add a volume to persist your database data
+    # This ensures your data isn't lost when the container stops or restarts
+    volumes:
+      - pg_data:/var/lib/postgresql     # <-- This is the new, recommended way
+# Define the named volume for persistence
+volumes:
+  pg_data:
