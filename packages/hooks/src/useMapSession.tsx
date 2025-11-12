@@ -20,9 +20,7 @@ export function useMapSession(
     if (!socket || !sessionData) return;
 
     const handleCurrentUsers = (currentUsers: User[]) => {
-      console.log("Received current users:");
       currentUsers.map((user: User) => dispatch(addUser(user)));
-      console.log("Dispatched current users to store");
     };
 
     const handleNewUser = (newUser: User) => {
