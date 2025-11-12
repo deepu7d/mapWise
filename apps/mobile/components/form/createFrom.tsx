@@ -5,8 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { sessionData } from "@repo/types";
 import { handleCreateRoomForm } from "@repo/hooks";
+import { storeData } from "@/lib/utils";
 import { router } from "expo-router";
-import { de } from "zod/v4/locales";
 
 const formSchema = z.object({
   name: z
@@ -92,12 +92,13 @@ export default function CreateRoom() {
         name: data.name,
         destination: data.destination,
         userPosition: [52.520007, 13.404954],
-        apiUrl: "https://bfxz3hqs-8000.inc1.devtunnels.m",
+        apiUrl: "https://bfxz3hqs-8000.inc1.devtunnels.ms",
       });
       if (response && response.data) {
         const sessionData: sessionData = response.data;
         console.log("Session Data:", sessionData);
-        // router.navigate("/(playground)/chat");
+        await storeData("sessionData", sessionData);
+        router.replace("/(playground)");
       } else {
         console.error("Failed to get a valid response from the server.");
       }

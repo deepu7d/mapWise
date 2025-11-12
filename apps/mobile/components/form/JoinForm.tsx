@@ -24,7 +24,7 @@ export default function JoinForm() {
     resolver: zodResolver(formSchema),
   });
   const handleFormSubmit = (data: formSchemaType) => {
-    router.navigate("/(playground)/chat");
+    router.navigate("/(playground)");
   };
   return (
     <View className="bg-white px-10 py-8 gap-8 shadow-md shadow-slate-400">
