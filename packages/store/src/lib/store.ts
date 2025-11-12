@@ -6,6 +6,11 @@ export const makeStore = () => {
     reducer: {
       users: usersReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        // warning only in development mode now disabled
+        serializableCheck: false,
+      }),
   });
 };
 

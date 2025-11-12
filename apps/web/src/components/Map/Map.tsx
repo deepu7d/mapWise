@@ -47,14 +47,6 @@ export default function MapLibre({ sessionData }: FriendsMapProps) {
       }
     );
   };
-  const contextSocket = useSocketContext();
-  useMapSession(
-    sessionData,
-    sessionData.roomId,
-    contextSocket,
-    userOnlineToast,
-    userOfflineToast
-  );
 
   const users = useAppSelector((state) => state.users);
   const mapRef = useRef<MapRef>(null);

@@ -8,10 +8,9 @@ import { Socket } from "socket.io-client";
 
 export function useMapSession(
   sessionData: sessionData | null,
-  roomId: string,
   socket: Socket | null,
-  userOnlineToast: ({ newUser }: { newUser: User }) => void,
-  userOfflineToast: ({ username }: { username: string }) => void
+  userOnlineToast?: ({ newUser }: { newUser: User }) => void,
+  userOfflineToast?: ({ username }: { username: string }) => void
 ): Socket | null {
   const dispatch = useAppDispatch();
 
@@ -21,11 +20,13 @@ export function useMapSession(
     if (!socket || !sessionData) return;
 
     const handleCurrentUsers = (currentUsers: User[]) => {
+      console.log("Received current users:");
       currentUsers.map((user: User) => dispatch(addUser(user)));
+      console.log("Dispatched current users to store");
     };
 
     const handleNewUser = (newUser: User) => {
-      userOnlineToast({ newUser });
+      userOnlineToast?.({ newUser });
       dispatch(addUser(newUser));
     };
 
@@ -37,7 +38,7 @@ export function useMapSession(
     };
 
     const handleUserDisconnected = (disconnetedUser: User) => {
-      userOfflineToast({ username: disconnetedUser.name });
+      userOfflineToast?.({ username: disconnetedUser.name });
       dispatch(userOffline({ id: disconnetedUser.id }));
     };
 
@@ -46,20 +47,20 @@ export function useMapSession(
     socket.on("location-update", handleLocationUpdate);
     socket.on("user-disconneted", handleUserDisconnected);
 
-    const watchId = navigator.geolocation.watchPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        currentPositionRef.current = [latitude, longitude];
-        dispatch(
-          updateUserPosition({
-            id: sessionData.userId,
-            position: [latitude, longitude],
-          })
-        );
-      },
-      (error) => console.error("Geolocation error:", error),
-      { enableHighAccuracy: true }
-    );
+    // const watchId = navigator.geolocation.watchPosition(
+    //   (position) => {
+    //     const { latitude, longitude } = position.coords;
+    //     currentPositionRef.current = [latitude, longitude];
+    //     dispatch(
+    //       updateUserPosition({
+    //         id: sessionData.userId,
+    //         position: [latitude, longitude],
+    //       })
+    //     );
+    //   },
+    //   (error) => console.error("Geolocation error:", error),
+    //   { enableHighAccuracy: true }
+    // );
 
     const intervalId = setInterval(() => {
       if (currentPositionRef.current) {
@@ -72,7 +73,7 @@ export function useMapSession(
 
     return () => {
       console.log("Cleaning up listeners and intervals...");
-      navigator.geolocation.clearWatch(watchId);
+      // navigator.geolocation.clearWatch(watchId);
       clearInterval(intervalId);
 
       socket.off("newUser", handleNewUser);
@@ -80,7 +81,7 @@ export function useMapSession(
       socket.off("location-update", handleLocationUpdate);
       socket.off("user-disconneted", handleUserDisconnected);
     };
-  }, [socket, roomId, sessionData, dispatch]);
+  }, [socket, , sessionData, dispatch]);
 
   return socket;
 }

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 const ChatSection = ({ sessionData }: { sessionData: sessionData }) => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const socket = useSocketContext();
+  const { socket } = useSocketContext();
 
   const messageToast = ({ data }: { data: Message }) => {
     toast(
