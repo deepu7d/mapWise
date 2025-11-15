@@ -11,10 +11,8 @@ import {
 import { Ionicons } from "@expo/vector-icons"; // Import icons
 import { useEffect, useState } from "react";
 import { sessionData } from "@repo/types";
-import { getData, storeData } from "@/lib/utils";
+import { getData } from "@/lib/utils";
 import * as Clipboard from "expo-clipboard";
-// import { PermissionsAndroid, Platform } from "react-native";
-// import { useEffect } from "react";
 
 export default function RootLayout() {
   const [sessionData, setSessionData] = useState<sessionData | null>(null);
@@ -32,7 +30,6 @@ export default function RootLayout() {
     if (Platform.OS === "android") {
       ToastAndroid.show(message, ToastAndroid.SHORT);
     } else {
-      // For iOS, you could use a third-party toast library or just use Alert
       Alert.alert("Success", message);
     }
   };
@@ -72,21 +69,6 @@ export default function RootLayout() {
     ]);
   };
 
-  // useEffect(() => {
-  //   const requestLocationPermission = async () => {
-  //     if (Platform.OS === "android") {
-  //       try {
-  //         await PermissionsAndroid.request(
-  //           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-  //         );
-  //       } catch (err) {
-  //         console.warn(err);
-  //       }
-  //     }
-  //   };
-
-  //   requestLocationPermission();
-  // }, []);
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["left", "right"]}>
       <Stack>

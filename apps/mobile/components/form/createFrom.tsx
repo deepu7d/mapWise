@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, ScrollView } from "react-native";
+import { View, Text, TextInput, Button, ScrollView, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +7,7 @@ import { sessionData } from "@repo/types";
 import { handleCreateRoomForm } from "@repo/hooks";
 import { storeData } from "@/lib/utils";
 import { router } from "expo-router";
+import * as Location from "expo-location";
 
 const formSchema = z.object({
   name: z
@@ -87,11 +88,51 @@ export default function CreateRoom() {
   const onSubmit = async (data: FormData) => {
     console.log("Submitting data:", data);
     setIsLoading(true);
+    let initialLocation;
+    try {
+      // 1. Ask for Foreground permissions
+      const { status: foregroundStatus } =
+        await Location.requestForegroundPermissionsAsync();
+      if (foregroundStatus !== "granted") {
+        Alert.alert(
+          "Permission Denied",
+          "We need foreground location permission to proceed."
+        );
+        return;
+      }
+
+      // 2. Ask for Background permissions
+      const { status: backgroundStatus } =
+        await Location.requestBackgroundPermissionsAsync();
+      if (backgroundStatus !== "granted") {
+        Alert.alert(
+          "Permission Denied",
+          "We need background location permission for this feature to work."
+        );
+        return;
+      }
+
+      // 3. If both are granted, navigate to the playground
+      console.log("Permissions granted. Navigating to playground...");
+      initialLocation = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
+    } catch (err) {
+      console.error("Error requesting permissions:", err);
+      Alert.alert("Error", "An error occurred while requesting permissions.");
+    }
+    if (!initialLocation) {
+      setIsLoading(false);
+      return;
+    }
+    const { latitude, longitude } = initialLocation.coords;
+    console.log(`Initial location: ${latitude}, ${longitude}`);
+
     try {
       const response = await handleCreateRoomForm({
         name: data.name,
         destination: data.destination,
-        userPosition: [52.520007, 13.404954],
+        userPosition: [latitude, longitude],
         apiUrl: "https://bfxz3hqs-8000.inc1.devtunnels.ms",
       });
       if (response && response.data) {

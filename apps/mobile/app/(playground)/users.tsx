@@ -18,7 +18,7 @@ export const usersColor = [
 
 export default function Users() {
   const users = useAppSelector((state) => state.users);
-  console.log("Users:", users);
+  // console.log("Users");
   return (
     <View className="flex-1 bg-white">
       <ScrollView className="bg-neutral-100 border border-neutral-300/50 w-full p-4">

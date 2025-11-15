@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs } from "expo-router";
 import { SocketProvider } from "@repo/hooks";
 import { StoreProvider } from "@repo/store";
@@ -6,6 +6,7 @@ import { getData } from "@/lib/utils";
 import { sessionData } from "@repo/types";
 import { Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
 export default function TabLayout() {
   const [sessionData, setSessionData] = useState<sessionData | null>(null);
 
@@ -16,6 +17,7 @@ export default function TabLayout() {
     };
     fetchSessionData();
   }, []);
+
   if (!sessionData) {
     console.log("Loading session data...");
     return (
@@ -37,7 +39,7 @@ export default function TabLayout() {
             tabBarStyle: {
               backgroundColor: "#bfdbfe",
             },
-            tabBarInactiveTintColor: "black", // Color for inactive tabs
+            tabBarInactiveTintColor: "black",
           }}
         >
           <Tabs.Screen

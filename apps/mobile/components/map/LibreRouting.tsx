@@ -176,13 +176,13 @@ export default function RoutingPolyline({
     return null;
   }
 
-  console.log(
-    "Rendering polyline for user:",
-    user.id,
-    "with",
-    visiblePath.length,
-    "points"
-  );
+  // console.log(
+  //   "Rendering polyline for user:",
+  //   user.id,
+  //   "with",
+  //   visiblePath.length,
+  //   "points"
+  // );
 
   // Render the MapLibre components for React Native
   return (

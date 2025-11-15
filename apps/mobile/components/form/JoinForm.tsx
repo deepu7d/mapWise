@@ -1,9 +1,10 @@
-import { View, Text, TextInput, Button } from "react-native";
+import { View, Text, TextInput, Button, Alert } from "react-native";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
+import * as Location from "expo-location";
 
 const formSchema = z.object({
   name: z
@@ -23,8 +24,43 @@ export default function JoinForm() {
   } = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
   });
-  const handleFormSubmit = (data: formSchemaType) => {
-    router.navigate("/(playground)");
+  const handleFormSubmit = async (data: formSchemaType) => {
+    try {
+      // 1. Ask for Foreground permissions
+      const { status: foregroundStatus } =
+        await Location.requestForegroundPermissionsAsync();
+      if (foregroundStatus !== "granted") {
+        Alert.alert(
+          "Permission Denied",
+          "We need foreground location permission to proceed."
+        );
+        return;
+      }
+
+      // 2. Ask for Background permissions
+      const { status: backgroundStatus } =
+        await Location.requestBackgroundPermissionsAsync();
+      if (backgroundStatus !== "granted") {
+        Alert.alert(
+          "Permission Denied",
+          "We need background location permission for this feature to work."
+        );
+        return;
+      }
+
+      // 3. If both are granted, navigate to the playground
+      console.log("Permissions granted. Navigating to playground...");
+      const initialLocation = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
+
+      const { latitude, longitude } = initialLocation.coords;
+      console.log(`Initial location: ${latitude}, ${longitude}`);
+      router.push("/(playground)"); // Or your navigation method
+    } catch (err) {
+      console.error("Error requesting permissions:", err);
+      Alert.alert("Error", "An error occurred while requesting permissions.");
+    }
   };
   return (
     <View className="bg-white px-10 py-8 gap-8 shadow-md shadow-slate-400">

@@ -1,22 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
+  Alert,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
+  Platform,
   Pressable,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
+  ToastAndroid,
   View,
 } from "react-native";
 import { useMessageSession, useSocketContext } from "@repo/hooks";
 import { getData } from "@/lib/utils";
-import { sessionData } from "@repo/types";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { Message, sessionData } from "@repo/types";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function Chat() {
+  console.log("Chat component rendered");
   const { socket } = useSocketContext();
   const [sessionData, setSessionData] = useState<sessionData | null>(null);
+  const [messageInput, setMessageInput] = useState("");
+
   useEffect(() => {
     const fetchSessionData = async () => {
       const data = await getData("sessionData");
@@ -24,9 +29,24 @@ export default function Chat() {
     };
     fetchSessionData();
   }, []);
+  const showMessageToast = ({ data }: { data: Message }) => {
+    const toastMessage =
+      data.userId === sessionData?.userId
+        ? "Message Sent"
+        : `${data.username} sent Message`;
 
-  const messages = useMessageSession(socket);
-  const [messageInput, setMessageInput] = useState("");
+    if (Platform.OS === "android") {
+      ToastAndroid.showWithGravity(
+        `🗨️ ${toastMessage}`,
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP
+      );
+    } else {
+      Alert.alert("🗨️", toastMessage);
+    }
+  };
+  const messages = useMessageSession(socket, showMessageToast);
+  console.log("Messages:", messages);
 
   if (!sessionData || !socket) {
     console.log("Loading session data...");
@@ -42,12 +62,15 @@ export default function Chat() {
     const message = messageInput.trim();
     if (message === "") return;
 
-    socket?.emit("send-message", {
+    const messageData = {
       content: message,
       userId: sessionData.userId,
       username: sessionData.username,
-    });
+    };
+
+    socket?.emit("send-message", messageData);
     setMessageInput("");
+    Keyboard.dismiss();
   };
 
   return (
