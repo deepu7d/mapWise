@@ -9,7 +9,7 @@ import {
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useAppSelector } from "@repo/store";
 import { usersColor } from "@/helper/constant";
-import { Destination, sessionData, User } from "@repo/types";
+import { Destination, Position, sessionData, User } from "@repo/types";
 import LibreRouting from "./Routing";
 import { Fragment, useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
@@ -47,6 +47,37 @@ export default function MapLibre({ sessionData }: FriendsMapProps) {
       }
     );
   };
+
+  const { socket } = useSocketContext();
+  const currentPositionRef = useRef<Position | null>(null);
+
+  useEffect(() => {
+    if (!socket || !sessionData) return;
+    console.log("Setting up geolocation watch...");
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        console.log("Current position:", latitude, longitude);
+        currentPositionRef.current = [latitude, longitude];
+      },
+      (error) => console.error("Geolocation error:", error),
+      { enableHighAccuracy: true }
+    );
+    console.log("Sending location update:", currentPositionRef.current);
+    const intervalId = setInterval(() => {
+      if (currentPositionRef.current) {
+        socket.emit("update-location", {
+          userId: sessionData.userId,
+          position: currentPositionRef.current,
+        });
+      }
+    }, 3000);
+    return () => {
+      console.log("Clearing geolocation watch...");
+      navigator.geolocation.clearWatch(watchId);
+      clearInterval(intervalId);
+    };
+  }, [socket, sessionData]);
 
   const users = useAppSelector((state) => state.users);
   const mapRef = useRef<MapRef>(null);
