@@ -12,10 +12,14 @@ export function locationHandler(io: Server, socket: Socket) {
   }) => {
     const { roomId } = socket.data;
     if (!roomId) return;
+    console.log(
+      `Received location update from user ${userId} in room ${roomId}:`,
+      position
+    );
     socket.data.lastPosition = position;
     try {
       const userData = { id: userId, position: position };
-      socket.to(roomId).emit("location-update", userData);
+      io.to(roomId).emit("location-update", userData);
     } catch (error) {
       console.error(
         `!!! ERROR handling updateLocation for socket ${socket.id}:`,
@@ -23,5 +27,5 @@ export function locationHandler(io: Server, socket: Socket) {
       );
     }
   };
-  socket.on("updateLocation", updateLocation);
+  socket.on("update-location", updateLocation);
 }
