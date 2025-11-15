@@ -26,7 +26,7 @@ const ChatSection = ({ sessionData }: { sessionData: sessionData }) => {
     );
   };
 
-  const messages = useMessageSession(socket, sessionData, messageToast);
+  const messages = useMessageSession(socket, messageToast);
 
   useEffect(() => {
     if (chatContainerRef.current) {

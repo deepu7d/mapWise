@@ -5,7 +5,6 @@ import { sortMessages } from "./helper/index";
 
 export function useMessageSession(
   socket: Socket | null,
-  sessionData?: sessionData,
   messageToast?: ({ data }: { data: Message }) => void
 ) {
   const [messages, setMessages] = useState<Message[]>([]);
