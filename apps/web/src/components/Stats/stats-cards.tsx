@@ -1,19 +1,19 @@
 "use client";
 
 import React from "react";
-import Card from "./Card";
+import Card from "./card";
 import { useAppSelector } from "@repo/store";
 import { Tooltip } from "react-tooltip";
-
-type UserCardsProps = {
+export default function StatsCards({
+  currentSocketId,
+}: {
   currentSocketId: string | null;
-};
-
-const UserCards = ({ currentSocketId }: UserCardsProps) => {
+}) {
   const users = useAppSelector((state) => state.users);
 
   return (
-    <div className="w-full rounded-lg max-w-5xl no-select no-highlight overflow-x-auto h-full px-4">
+    <div>
+      {" "}
       {users.length > 0 ? (
         <ul className="flex flex-wrap gap-2 ">
           {users.map((user, index) => {
@@ -33,6 +33,4 @@ const UserCards = ({ currentSocketId }: UserCardsProps) => {
       )}
     </div>
   );
-};
-
-export default UserCards;
+}
