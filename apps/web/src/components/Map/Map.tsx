@@ -15,73 +15,20 @@ import { Fragment, useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import { useMapSession, useSocketContext } from "@repo/hooks";
 import toast from "react-hot-toast";
+import { useGeolocation } from "@/hooks/useGeolocation";
+import { MemoizedUserMarker } from "./user-markers";
+import { MemoizedUserAvatarBar } from "./user-avatar";
+import DestinationMarker from "./destination-marker";
 
 type FriendsMapProps = {
   sessionData: sessionData;
 };
 
 export default function MapLibre({ sessionData }: FriendsMapProps) {
-  const userOnlineToast = ({ newUser }: { newUser: User }) => {
-    toast(
-      <span>
-        <span className="font-bold">
-          {newUser.id == sessionData?.userId ? "You" : newUser.name}
-        </span>{" "}
-        Joined
-      </span>,
-      {
-        icon: "🧑🏻",
-        className: "border border-solid border-black p-4 rounded-md bg-white",
-      }
-    );
-  };
-
-  const userOfflineToast = ({ username }: { username: string }) => {
-    toast(
-      <span>
-        <span className="font-bold">{username}</span> Offline
-      </span>,
-      {
-        icon: "☹️",
-        className: "border border-solid border-black p-4 rounded-md bg-white",
-      }
-    );
-  };
-
-  const { socket } = useSocketContext();
-  const currentPositionRef = useRef<Position | null>(null);
-
-  useEffect(() => {
-    if (!socket || !sessionData) return;
-    console.log("Setting up geolocation watch...");
-    const watchId = navigator.geolocation.watchPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        console.log("Current position:", latitude, longitude);
-        currentPositionRef.current = [latitude, longitude];
-      },
-      (error) => console.error("Geolocation error:", error),
-      { enableHighAccuracy: true }
-    );
-    console.log("Sending location update:", currentPositionRef.current);
-    const intervalId = setInterval(() => {
-      if (currentPositionRef.current) {
-        socket.emit("update-location", {
-          userId: sessionData.userId,
-          position: currentPositionRef.current,
-        });
-      }
-    }, 3000);
-    return () => {
-      console.log("Clearing geolocation watch...");
-      navigator.geolocation.clearWatch(watchId);
-      clearInterval(intervalId);
-    };
-  }, [socket, sessionData]);
+  useGeolocation(sessionData?.userId);
 
   const users = useAppSelector((state) => state.users);
   const mapRef = useRef<MapRef>(null);
-  const userContainerRef = useRef<HTMLDivElement>(null);
   const flyToUser = (user: User) => {
     const map = mapRef.current?.getMap();
     if (!map) return;
@@ -116,75 +63,28 @@ export default function MapLibre({ sessionData }: FriendsMapProps) {
         {users.map((user, index) => {
           const colorHex = usersColor[index % usersColor.length].hex;
           return (
-            <Fragment key={user.id}>
-              <Marker
-                latitude={user.position[0]}
-                longitude={user.position[1]}
-                anchor="bottom"
-              >
-                <UserIcon color={colorHex} />
-              </Marker>
-              <LibreRouting user={user} index={index} />
-            </Fragment>
+            <MemoizedUserMarker
+              key={user.id}
+              user={user}
+              colorHex={colorHex}
+              index={index}
+            />
           );
         })}
+        <DestinationMarker
+          destinationPosition={sessionData.destinationPosition}
+        />
 
-        <Marker
-          latitude={sessionData.destinationPosition[0]}
-          longitude={sessionData.destinationPosition[1]}
-          anchor="bottom"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
-            viewBox="0 0 24 24"
-            fill="red"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-flag-icon lucide-flag"
-          >
-            <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
-          </svg>
-        </Marker>
         <FullscreenControl position="top-right" />
         <NavigationControl position="top-right" />
       </Map>
-      <div
-        className="flex gap-2 p-2 overflow-y-auto w-full absolute bottom-0 left-0"
-        ref={userContainerRef}
-      >
-        {users.map((user, index) => {
-          const colorTailwind = usersColor[index % usersColor.length].tailwind;
-          return (
-            <button
-              key={user.id}
-              onClick={() => flyToUser(user)}
-              className={`${colorTailwind} w-10 h-10 rounded-full font-semibold text-slate-800 flex-shrink-0 flex items-center justify-center`}
-            >
-              {user.name[0].toUpperCase()}
-            </button>
-          );
-        })}
-      </div>
+      <MemoizedUserAvatarBar
+        users={users}
+        onUserClick={(user) => flyToUser(user)}
+      />
     </div>
   );
 }
-
-const UserIcon = ({ color = "#d00" }) => (
-  <svg
-    width="40"
-    height="40"
-    viewBox="0 0 24 24"
-    fill={color}
-    xmlns="http://www.w3.org/2000/svg"
-    style={{ cursor: "pointer", stroke: "none" }}
-  >
-    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5-2.5z" />
-  </svg>
-);
 
 function MapController({
   users,
