@@ -12,10 +12,10 @@ export function locationHandler(io: Server, socket: Socket) {
   }) => {
     const { roomId } = socket.data;
     if (!roomId) return;
-    console.log(
-      `Received location update from user ${userId} in room ${roomId}:`,
-      position
-    );
+    // console.log(
+    //   `Received location update from user ${userId} in room ${roomId}:`,
+    //   position
+    // );
     socket.data.lastPosition = position;
     try {
       const userData = { id: userId, position: position };
