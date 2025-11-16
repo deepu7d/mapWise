@@ -1,7 +1,7 @@
-import { tabType } from "@/app/playground/[id]/page";
 import { Map, MessageCircleMore, User } from "lucide-react";
 import { motion } from "motion/react";
 import React from "react";
+import { tabType } from "./Screens";
 export default function TabBar({
   setCurrentTab,
   currentTab,
