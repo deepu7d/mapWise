@@ -25,7 +25,7 @@ export function useGeolocation(userId: string | undefined) {
           position: currentPositionRef.current,
         });
       }
-    }, 1000000); // Send update every 10 seconds
+    }, 3000); // Send update every 10 seconds
 
     return () => {
       console.log("Clearing geolocation watch...");
