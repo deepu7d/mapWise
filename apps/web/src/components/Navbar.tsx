@@ -1,41 +1,40 @@
-import { LogOut, Share2 } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { redirect } from "next/navigation";
-import React, { useState } from "react";
+import CopyButton from "./Buttons/copy-button";
+import { useSocketContext } from "@repo/hooks";
 
 export default function Navbar({ roomId }: { roomId: string }) {
-  const [isCopied, setIsCopied] = useState<boolean>(false);
-  const handleCopy = () => {
-    const websiteUrl =
-      typeof window !== "undefined" ? window.location.origin : "";
-    const link = `${websiteUrl}/form/?admin=false&roomId=${roomId}`;
-    navigator.clipboard
-      .writeText(link)
-      .then(() => {
-        setIsCopied(true);
-        setTimeout(() => {
-          setIsCopied(false);
-        }, 2000);
-      })
-      .catch((err) => {
-        console.log("failed to copy", err);
-      });
-  };
   const handleExit = () => {
     if (window.confirm("Are you sure you want to exit?")) {
       sessionStorage.clear();
       redirect("/form");
     }
   };
+  const { isConnected } = useSocketContext();
   return (
     <div className="w-full flex items-center justify-between rounded-lg p-4">
-      <p className="text-lg font-bold text-gray-800">MapWise</p>
-      <div className="flex gap-4">
-        <button
-          onClick={handleCopy}
-          className="bg-blue-500 rounded-xl text-white font-bold p-2 hover:bg-blue-600"
+      <p className="text-xl font-bold text-gray-800">MapWise</p>
+      <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm">
+        <div className="relative flex items-center">
+          <span
+            className={`w-2.5 h-2.5 rounded-full ${
+              isConnected ? "bg-green-500" : "bg-gray-400"
+            }`}
+          />
+          {isConnected && (
+            <span className="absolute w-2.5 h-2.5 rounded-full bg-green-500" />
+          )}
+        </div>
+        <span
+          className={`font-semibold text-sm ${
+            isConnected ? "text-green-600" : "text-gray-500"
+          }`}
         >
-          {isCopied ? "copied" : <Share2 />}
-        </button>
+          {isConnected ? "Online" : "Offline"}
+        </span>
+      </div>
+      <div className="flex gap-4">
+        <CopyButton roomId={roomId} />
         <button
           onClick={handleExit}
           className="bg-red-500 p-2 rounded-xl text-white"

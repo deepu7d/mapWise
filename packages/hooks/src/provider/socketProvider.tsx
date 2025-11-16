@@ -3,10 +3,12 @@ import { Socket } from "socket.io-client";
 import { useSocket } from "../useSocket";
 import { useJoinRoom } from "../useJoinRoom";
 import { useMapSession } from "../useMapSession";
+import { sessionData, User } from "@repo/types";
 
 type SocketContextType = {
   socket: Socket | null;
-  sessionData: any; // Or use a more specific type
+  sessionData: sessionData; // Or use a more specific type
+  isConnected: boolean;
 };
 
 // 2. Update the context
@@ -16,17 +18,21 @@ export function SocketProvider({
   children,
   sessionData,
   apiBaseUrl,
+  userOnlineToast,
+  userOfflineToast,
 }: {
   children: React.ReactNode;
   sessionData: any;
   apiBaseUrl: string;
+  userOnlineToast: ({ newUser }: { newUser: User }) => void;
+  userOfflineToast: ({ username }: { username: string }) => void;
 }) {
   const socket = useSocket(apiBaseUrl || "");
-  useJoinRoom(socket, sessionData);
-  useMapSession(sessionData, socket);
+  const isConnected = useJoinRoom(socket, sessionData);
+  useMapSession(sessionData, socket, userOnlineToast, userOfflineToast);
 
   return (
-    <SocketContext.Provider value={{ socket, sessionData }}>
+    <SocketContext.Provider value={{ socket, sessionData, isConnected }}>
       {children}
     </SocketContext.Provider>
   );
