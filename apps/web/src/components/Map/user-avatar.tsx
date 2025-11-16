@@ -10,14 +10,14 @@ type UserAvatarBarProps = {
 
 function UserAvatarBar({ users, onUserClick }: UserAvatarBarProps) {
   return (
-    <div className="flex gap-2 p-2 overflow-y-auto w-full absolute bottom-0 left-0">
+    <div className="absolute bottom-0 left-0 flex w-full gap-2 overflow-y-auto p-2">
       {users.map((user, index) => {
         const colorTailwind = usersColor[index % usersColor.length].tailwind;
         return (
           <button
             key={user.id}
             onClick={() => onUserClick(user)}
-            className={`${colorTailwind} w-10 h-10 rounded-full font-semibold ...`}
+            className={`${colorTailwind} ... h-10 w-10 rounded-full font-semibold`}
           >
             {user.name[0].toUpperCase()}
           </button>

@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 export default function App() {
   return (
-    <View className="flex-1 w-full">
+    <View className="w-full flex-1">
       <MainForm />
     </View>
   );

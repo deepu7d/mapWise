@@ -7,14 +7,15 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
+    "format": "prettier --write .",
     "scan": "next dev "
   },
   "dependencies": {
     "@maptiler/sdk": "^3.8.0",
     "@reduxjs/toolkit": "^2.8.2",
-    "@repo/types": "workspace:*",
     "@repo/hooks": "workspace:*",
     "@repo/store": "workspace:*",
+    "@repo/types": "workspace:*",
     "@vis.gl/react-maplibre": "^8.1.0",
     "axios": "^1.11.0",
     "clsx": "^2.1.1",
@@ -40,6 +41,8 @@
     "@types/react-dom": "^19.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.5.11",
     "react-scan": "^0.4.3",
     "tailwindcss": "^4",
     "typescript": "^5"

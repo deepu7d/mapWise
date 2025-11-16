@@ -22,7 +22,7 @@ export default function ChatMessages() {
       {
         icon: "🗨️",
         className: "border border-solid border-black p-4 rounded-md bg-white",
-      }
+      },
     );
   };
 
@@ -37,7 +37,7 @@ export default function ChatMessages() {
   return (
     <div
       ref={chatContainerRef}
-      className="flex-1 p-2 space-y-2 overflow-y-auto"
+      className="flex-1 space-y-2 overflow-y-auto p-2"
     >
       {messages.map((message: Message, index) => {
         const isOwnMessage = message.userId === sessionData.userId;

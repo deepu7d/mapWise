@@ -12,21 +12,21 @@ export default function Navbar({ roomId }: { roomId: string }) {
   };
   const { isConnected } = useSocketContext();
   return (
-    <div className="w-full flex items-center justify-between rounded-lg p-4">
+    <div className="flex w-full items-center justify-between rounded-lg p-4">
       <p className="text-xl font-bold text-gray-800">MapWise</p>
-      <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm">
+      <div className="flex items-center gap-2 rounded-full border border-gray-200 bg-white/80 px-4 py-2 shadow-sm backdrop-blur-sm">
         <div className="relative flex items-center">
           <span
-            className={`w-2.5 h-2.5 rounded-full ${
+            className={`h-2.5 w-2.5 rounded-full ${
               isConnected ? "bg-green-500" : "bg-gray-400"
             }`}
           />
           {isConnected && (
-            <span className="absolute w-2.5 h-2.5 rounded-full bg-green-500" />
+            <span className="absolute h-2.5 w-2.5 rounded-full bg-green-500" />
           )}
         </div>
         <span
-          className={`font-semibold text-sm ${
+          className={`text-sm font-semibold ${
             isConnected ? "text-green-600" : "text-gray-500"
           }`}
         >
@@ -37,7 +37,7 @@ export default function Navbar({ roomId }: { roomId: string }) {
         <CopyButton roomId={roomId} />
         <button
           onClick={handleExit}
-          className="bg-red-500 p-2 rounded-xl text-white"
+          className="rounded-xl bg-red-500 p-2 text-white"
         >
           <LogOut />
         </button>

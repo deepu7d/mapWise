@@ -23,7 +23,7 @@ export default function CopyButton({ roomId }: { roomId: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="bg-blue-500 rounded-xl text-white font-bold p-2 hover:bg-blue-600"
+      className="rounded-xl bg-blue-500 p-2 font-bold text-white hover:bg-blue-600"
     >
       {isCopied ? "copied" : <Share2 />}
     </button>

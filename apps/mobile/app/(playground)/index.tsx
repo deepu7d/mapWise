@@ -65,9 +65,9 @@ export default function Map() {
               updateUserPosition({
                 id: sessionData.userId,
                 position: [location.coords.latitude, location.coords.longitude],
-              })
+              }),
             );
-          }
+          },
         );
       } catch (err) {
         console.error("Error starting location watcher:", err);
@@ -108,20 +108,20 @@ export default function Map() {
   };
   if (users.length === 0) {
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 items-center justify-center">
         <Text className="text-2xl">No users in the session.</Text>
       </View>
     );
   }
   if (!sessionData) {
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 items-center justify-center">
         <Text className="text-2xl">Loading session data...</Text>
       </View>
     );
   }
   return (
-    <View className="flex-1 justify-center items-center">
+    <View className="flex-1 items-center justify-center">
       <Text className={`${routingFinished ? "hidden" : "block"} text-2xl`}>
         Loading Routes...
       </Text>

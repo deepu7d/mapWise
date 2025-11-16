@@ -19,15 +19,15 @@ export default React.memo(function MessageItem({
       transition={{ type: "spring", stiffness: 200, damping: 20, duration: 1 }}
       className={`flex flex-col ${isOwnMessage ? "items-end" : "items-start"}`}
     >
-      <h1 className="text-xs truncate max-w-[30%]">
+      <h1 className="max-w-[30%] truncate text-xs">
         {showUsername && message.username}
       </h1>
       <p
         className={`${
           isOwnMessage
-            ? "bg-blue-400  rounded-tl-lg rounded-br-lg"
-            : "bg-slate-200  rounded-tr-lg rounded-bl-lg"
-        } text-slate-800 text-md  w-fit max-w-[70%] px-2 py-0.5 break-words`}
+            ? "rounded-br-lg  rounded-tl-lg bg-blue-400"
+            : "rounded-bl-lg  rounded-tr-lg bg-slate-200"
+        } text-md w-fit  max-w-[70%] break-words px-2 py-0.5 text-slate-800`}
       >
         {message.content}
       </p>

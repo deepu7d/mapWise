@@ -15,7 +15,7 @@ export function useGeolocation(userId: string | undefined) {
         currentPositionRef.current = [latitude, longitude];
       },
       (error) => console.error("Geolocation error:", error),
-      { enableHighAccuracy: true }
+      { enableHighAccuracy: true },
     );
 
     const intervalId = setInterval(() => {

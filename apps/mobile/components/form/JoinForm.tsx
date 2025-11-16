@@ -32,7 +32,7 @@ export default function JoinForm() {
       if (foregroundStatus !== "granted") {
         Alert.alert(
           "Permission Denied",
-          "We need foreground location permission to proceed."
+          "We need foreground location permission to proceed.",
         );
         return;
       }
@@ -43,7 +43,7 @@ export default function JoinForm() {
       if (backgroundStatus !== "granted") {
         Alert.alert(
           "Permission Denied",
-          "We need background location permission for this feature to work."
+          "We need background location permission for this feature to work.",
         );
         return;
       }
@@ -63,10 +63,10 @@ export default function JoinForm() {
     }
   };
   return (
-    <View className="bg-white px-10 py-8 gap-8 shadow-md shadow-slate-400">
-      <Text className="text-3xl font-bold self-center">Join Room</Text>
+    <View className="gap-8 bg-white px-10 py-8 shadow-md shadow-slate-400">
+      <Text className="self-center text-3xl font-bold">Join Room</Text>
       <View className="flex gap-1">
-        <Text className="text-gray-600 font-medium">Your Name</Text>
+        <Text className="font-medium text-gray-600">Your Name</Text>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -75,7 +75,7 @@ export default function JoinForm() {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              className="border border-gray-300 rounded-xl px-3 py-3 text-base text-gray-800 focus:border-blue-400 "
+              className="rounded-xl border border-gray-300 px-3 py-3 text-base text-gray-800 focus:border-blue-400 "
             />
           )}
           name="name"
@@ -83,7 +83,7 @@ export default function JoinForm() {
         {errors.name && <Text className="text-red-500">This is required.</Text>}
       </View>
       <View className="flex gap-1">
-        <Text className="text-gray-600 font-medium ">Room ID</Text>
+        <Text className="font-medium text-gray-600 ">Room ID</Text>
 
         <Controller
           control={control}
@@ -93,7 +93,7 @@ export default function JoinForm() {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              className="border border-gray-300 rounded-xl px-3 py-3 text-base text-gray-800 focus:border-blue-400 "
+              className="rounded-xl border border-gray-300 px-3 py-3 text-base text-gray-800 focus:border-blue-400 "
             />
           )}
           name="roomId"

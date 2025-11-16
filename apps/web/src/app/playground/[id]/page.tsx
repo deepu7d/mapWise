@@ -23,7 +23,7 @@ export default function PlaygroundPage() {
 
   if (!sessionData) {
     return (
-      <h1 className="h-dvh w-full flex justify-center items-center text-3xl">
+      <h1 className="flex h-dvh w-full items-center justify-center text-3xl">
         Loading....
       </h1>
     );
@@ -40,7 +40,7 @@ export default function PlaygroundPage() {
       {
         icon: "🧑🏻",
         className: "border border-solid border-black p-4 rounded-md bg-white",
-      }
+      },
     );
   };
 
@@ -52,7 +52,7 @@ export default function PlaygroundPage() {
       {
         icon: "☹️",
         className: "border border-solid border-black p-4 rounded-md bg-white",
-      }
+      },
     );
   };
 
@@ -63,7 +63,7 @@ export default function PlaygroundPage() {
       userOnlineToast={userOnlineToast}
       userOfflineToast={userOfflineToast}
     >
-      <main className="flex h-dvh flex-col items-center overflow-hidden w-full justify-center max-w-xl mx-auto bg-white border border-gray-200 shadow-md">
+      <main className="mx-auto flex h-dvh w-full max-w-xl flex-col items-center justify-center overflow-hidden border border-gray-200 bg-white shadow-md">
         <Navbar roomId={roomId} />
         <Screens sessionData={sessionData} />
       </main>

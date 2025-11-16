@@ -3,7 +3,7 @@ import { Message, Position } from "@repo/types";
 // Haversine formula to calculate distance between two lat/lon points
 export const calculateDistance = (
   pos1: [number, number],
-  pos2: [number, number]
+  pos2: [number, number],
 ): number => {
   const R = 6371; // Radius of the Earth in kilometers
   const [lat1, lon1] = pos1;
@@ -44,7 +44,7 @@ export const getCurrentLocation = (): Promise<Position> => {
       (error) => {
         reject(error);
       },
-      { enableHighAccuracy: false }
+      { enableHighAccuracy: false },
     );
   });
 };
@@ -55,6 +55,6 @@ export const getMarkerSVG = (color: string) => {
 
 export const sortMessages = (msgs: Message[]) => {
   return msgs.sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
   );
 };

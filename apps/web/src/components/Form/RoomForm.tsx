@@ -48,7 +48,7 @@ export default function RoomForm({
 
     const handler = setTimeout(() => {
       fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${destinationQuery}`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${destinationQuery}`,
       )
         .then((response) => response.json())
         .then((data) => setSearchResults(data))
@@ -85,8 +85,8 @@ export default function RoomForm({
   };
 
   return (
-    <div className="w-full max-w-md p-8 space-y-6 rounded-lg shadow-xl border border-gray-400/50 ">
-      <h2 className="text-2xl font-bold text-center text-gray-800">
+    <div className="w-full max-w-md space-y-6 rounded-lg border border-gray-400/50 p-8 shadow-xl ">
+      <h2 className="text-center text-2xl font-bold text-gray-800">
         {isAdmin ? "Create a New Room" : "Join a Room"}
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -102,7 +102,7 @@ export default function RoomForm({
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             placeholder="Enter your name"
             required
           />
@@ -121,17 +121,17 @@ export default function RoomForm({
               type="text"
               value={destinationQuery}
               onChange={(e) => setDestinationQuery(e.target.value)}
-              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               placeholder="Search for a location..."
               required
             />
             {searchResults.length > 0 && (
-              <ul className="absolute z-10 w-full mt-1 overflow-y-auto bg-white border border-gray-300 rounded-md shadow-lg max-h-60">
+              <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg">
                 {searchResults.map((result) => (
                   <li
                     key={result.place_id}
                     onClick={() => handleDestinationSelect(result)}
-                    className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                    className="cursor-pointer px-3 py-2 hover:bg-gray-100"
                   >
                     {result.display_name}
                   </li>
@@ -152,7 +152,7 @@ export default function RoomForm({
               type="text"
               value={roomId}
               onChange={(e) => setRoomId(e.target.value)}
-              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               placeholder="Enter Room ID"
               required
             />
@@ -162,10 +162,10 @@ export default function RoomForm({
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full px-4 py-2 font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400"
+          className="w-full rounded-md bg-blue-600 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400"
         >
           {isLoading ? (
-            <h1 className="flex justify-center items-center gap-2">
+            <h1 className="flex items-center justify-center gap-2">
               Connecting
               <div className="flex gap-2">
                 {[...Array(3)].map((_, index) => (

@@ -39,7 +39,7 @@ export default function Chat() {
       ToastAndroid.showWithGravity(
         `🗨️ ${toastMessage}`,
         ToastAndroid.SHORT,
-        ToastAndroid.TOP
+        ToastAndroid.TOP,
       );
     } else {
       Alert.alert("🗨️", toastMessage);
@@ -51,7 +51,7 @@ export default function Chat() {
   if (!sessionData || !socket) {
     console.log("Loading session data...");
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 items-center justify-center">
         <Text className="text-2xl font-bold">Loading...</Text>
       </View>
     );
@@ -83,10 +83,10 @@ export default function Chat() {
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id}
-        className="flex-1 bg-neutral-100 w-full"
+        className="w-full flex-1 bg-neutral-100"
         contentContainerClassName="p-4"
         ListEmptyComponent={
-          <Text className="text-center text-neutral-500 mt-4">
+          <Text className="mt-4 text-center text-neutral-500">
             No messages yet. Start the conversation!
           </Text>
         }
@@ -96,17 +96,17 @@ export default function Chat() {
             (index === 0 || messages[index - 1].userId !== msg.userId);
           return (
             <View
-              className={`flex mt-2 ${msg.userId === sessionData.userId ? "items-end" : "items-start"}`}
+              className={`mt-2 flex ${msg.userId === sessionData.userId ? "items-end" : "items-start"}`}
             >
               {showUsername && (
-                <Text className="text-sm mb-1">{msg.username}</Text>
+                <Text className="mb-1 text-sm">{msg.username}</Text>
               )}
               <Text
                 className={`${
                   msg.userId === sessionData.userId
-                    ? "bg-blue-400  rounded-tl-2xl rounded-br-2xl"
-                    : "bg-slate-200  rounded-tr-2xl rounded-bl-2xl"
-                } text-slate-800 text-lg  w-fit max-w-[70%] px-3 py-1 break-words`}
+                    ? "rounded-br-2xl  rounded-tl-2xl bg-blue-400"
+                    : "rounded-bl-2xl  rounded-tr-2xl bg-slate-200"
+                } w-fit max-w-[70%]  break-words px-3 py-1 text-lg text-slate-800`}
               >
                 {msg.content}
               </Text>
@@ -114,7 +114,7 @@ export default function Chat() {
           );
         }}
       />
-      <View className="flex flex-row p-4 gap-2 bg-transparent">
+      <View className="flex flex-row gap-2 bg-transparent p-4">
         <View className="flex-1">
           <TextInput
             onChangeText={setMessageInput}
@@ -122,12 +122,12 @@ export default function Chat() {
             value={messageInput}
             placeholder="Type your message"
             placeholderTextColor="gray"
-            className="text-neutral-800 px-4 py-3 bg-neutral-200 flex-1 rounded-full"
+            className="flex-1 rounded-full bg-neutral-200 px-4 py-3 text-neutral-800"
           />
         </View>
         <Pressable
           onPress={handleSubmit}
-          className="p-4 bg-blue-400 rounded-full"
+          className="rounded-full bg-blue-400 p-4"
         >
           <AntDesign name="send" size={20} color="white" />
         </Pressable>

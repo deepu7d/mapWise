@@ -9,7 +9,7 @@ type UserCardsProps = {
 
 export default function StatsContainer({ currentSocketId }: UserCardsProps) {
   return (
-    <div className="w-full rounded-lg max-w-5xl no-select no-highlight overflow-x-auto h-full px-4">
+    <div className="no-select no-highlight h-full w-full max-w-5xl overflow-x-auto rounded-lg px-4">
       <StatsCards currentSocketId={currentSocketId} />
     </div>
   );

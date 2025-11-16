@@ -41,7 +41,7 @@ export default function MapLibre({ sessionData }: FriendsMapProps) {
   };
 
   return (
-    <div className="h-full w-full relative">
+    <div className="relative h-full w-full">
       <Map
         ref={mapRef}
         initialViewState={{

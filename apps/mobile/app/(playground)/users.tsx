@@ -21,17 +21,17 @@ export default function Users() {
   // console.log("Users");
   return (
     <View className="flex-1 bg-white">
-      <ScrollView className="bg-neutral-100 border border-neutral-300/50 w-full p-4">
+      <ScrollView className="w-full border border-neutral-300/50 bg-neutral-100 p-4">
         {users.map((user, index) => (
           <View
             key={user.id}
-            className="px-4 py-2 mb-4 rounded-2xl "
+            className="mb-4 rounded-2xl px-4 py-2 "
             style={{
               backgroundColor: usersColor[index % usersColor.length].hex,
             }}
           >
-            <View className="flex-row justify-between items-center mb-2">
-              <Text className="font-extrabold text-lg">{user.name}</Text>
+            <View className="mb-2 flex-row items-center justify-between">
+              <Text className="text-lg font-extrabold">{user.name}</Text>
               <Text
                 className={`text-${user.online ? "green" : "red"}-400 font-bold`}
               >

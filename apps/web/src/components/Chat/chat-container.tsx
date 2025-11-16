@@ -24,23 +24,23 @@ const ChatSection = ({ sessionData }: { sessionData: sessionData }) => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full max-w-3xl bg-slate-100 shadow-lg rounded-2xl mx-auto">
-      <div className="py-2 px-4 border-b border-gray-200">
+    <div className="mx-auto flex h-full w-full max-w-3xl flex-col rounded-2xl bg-slate-100 shadow-lg">
+      <div className="border-b border-gray-200 px-4 py-2">
         <h1 className="text-md font-semibold text-gray-800">Chat Here</h1>
       </div>
       <ChatMessages />
-      <div className="p-4 border-t border-gray-200 bg-gray-50">
+      <div className="border-t border-gray-200 bg-gray-50 p-4">
         <form onSubmit={handleSubmit} className="flex items-center space-x-3">
           <input
             type="text"
             name="message"
             placeholder="Type your message here..."
-            className="w-full px-4 py-2 bg-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full rounded-full bg-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
           <button
             type="submit"
-            className="flex-shrink-0 p-3 text-white bg-blue-500 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+            className="flex-shrink-0 rounded-full bg-blue-500 p-3 text-white transition-colors duration-200 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             <SendHorizontal />
           </button>

@@ -70,7 +70,7 @@ export default function RoutingPolyline({
   const [fullPath, setFullPath] = useState<Position[]>([]);
   const [visiblePath, setVisiblePath] = useState<Position[]>([]);
   const [initialRouteStats, setInitialRouteStats] = useState<RouteStats | null>(
-    null
+    null,
   );
 
   const userColor = usersColor[index % usersColor.length].hex;
@@ -83,7 +83,7 @@ export default function RoutingPolyline({
       if (data && data.routes && data.routes.length > 0) {
         const routeData = data.routes[0];
         const coordinates = routeData.geometry.coordinates.map(
-          (coord: [number, number]) => [coord[0], coord[1]] as [number, number]
+          (coord: [number, number]) => [coord[0], coord[1]] as [number, number],
         );
         setFullPath(coordinates);
         setVisiblePath(coordinates); // Initially, visible path is the full path

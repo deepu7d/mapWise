@@ -7,7 +7,7 @@ function Loading() {
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col items-center justify-center h-dvh max-w-xl mx-auto border-gray-200 shadow-md">
+    <main className="mx-auto flex h-dvh max-w-xl flex-col items-center justify-center border-gray-200 shadow-md">
       <Suspense fallback={<Loading />}>
         <MainForm />
       </Suspense>

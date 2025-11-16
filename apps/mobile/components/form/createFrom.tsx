@@ -58,7 +58,7 @@ export default function CreateRoom() {
             headers: {
               "User-Agent": "MapWise/1.0",
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -96,7 +96,7 @@ export default function CreateRoom() {
       if (foregroundStatus !== "granted") {
         Alert.alert(
           "Permission Denied",
-          "We need foreground location permission to proceed."
+          "We need foreground location permission to proceed.",
         );
         return;
       }
@@ -107,7 +107,7 @@ export default function CreateRoom() {
       if (backgroundStatus !== "granted") {
         Alert.alert(
           "Permission Denied",
-          "We need background location permission for this feature to work."
+          "We need background location permission for this feature to work.",
         );
         return;
       }
@@ -150,10 +150,10 @@ export default function CreateRoom() {
     }
   };
   return (
-    <View className="bg-white px-10 py-8 gap-8 shadow-md shadow-slate-400">
-      <Text className="text-3xl font-bold self-center">Create Room</Text>
+    <View className="gap-8 bg-white px-10 py-8 shadow-md shadow-slate-400">
+      <Text className="self-center text-3xl font-bold">Create Room</Text>
       <View className="flex gap-1">
-        <Text className="text-gray-600 font-medium">Your Name</Text>
+        <Text className="font-medium text-gray-600">Your Name</Text>
         <Controller
           control={control}
           name="name"
@@ -163,7 +163,7 @@ export default function CreateRoom() {
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              className="border border-gray-300 rounded-xl px-3 py-3 text-base text-gray-800 focus:border-blue-400 "
+              className="rounded-xl border border-gray-300 px-3 py-3 text-base text-gray-800 focus:border-blue-400 "
             />
           )}
         />
@@ -172,7 +172,7 @@ export default function CreateRoom() {
         )}
       </View>
       <View className="flex gap-1">
-        <Text className="text-gray-600 font-medium ">Destination</Text>
+        <Text className="font-medium text-gray-600 ">Destination</Text>
 
         <Controller
           control={control}
@@ -183,16 +183,16 @@ export default function CreateRoom() {
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              className="border border-gray-300 rounded-xl px-3 py-3 text-base text-gray-800 focus:border-blue-400 "
+              className="rounded-xl border border-gray-300 px-3 py-3 text-base text-gray-800 focus:border-blue-400 "
             />
           )}
         />
         {searchResults.length > 0 && (
-          <ScrollView className="absolute top-20 bg-white z-10 max-h-40 border border-gray-300 rounded-md">
+          <ScrollView className="absolute top-20 z-10 max-h-40 rounded-md border border-gray-300 bg-white">
             {searchResults.map((result) => (
               <Text
                 key={result.place_id}
-                className="px-3 py-2 border-b border-gray-200"
+                className="border-b border-gray-200 px-3 py-2"
                 onPress={() => handleDestinationSelect(result)}
               >
                 {result.display_name}

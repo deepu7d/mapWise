@@ -21,7 +21,7 @@ export default function MainForm() {
         className="w-full flex-1 justify-center bg-slate-100"
       >
         {/* navbar */}
-        <View className="flex flex-row gap-10 justify-center mb-5">
+        <View className="mb-5 flex flex-row justify-center gap-10">
           <TouchableOpacity onPress={() => setIsAdmin(true)}>
             <Text
               className={`${isAdmin ? "border-b-2 border-blue-500 text-blue-500" : ""}  text-xl`}

@@ -107,13 +107,13 @@ export default function MainForm() {
   return (
     <>
       <div className="mb-4">
-        <nav className="flex -mb-px space-x-6">
+        <nav className="-mb-px flex space-x-6">
           <button
             onClick={() => {
               setIsAdmin(true);
               router.replace("/form?admin=true");
             }}
-            className={`p-4 font-medium text-md rounded-t-md ${
+            className={`text-md rounded-t-md p-4 font-medium ${
               isAdmin ? " text-blue-600" : "text-gray-500 hover:text-gray-700"
             }`}
           >
@@ -130,7 +130,7 @@ export default function MainForm() {
               setIsAdmin(false);
               router.replace("/form?admin=false");
             }}
-            className={`px-3 py-2 font-medium text-md rounded-t-md ${
+            className={`text-md rounded-t-md px-3 py-2 font-medium ${
               !isAdmin ? "text-blue-600" : "text-gray-500 hover:text-gray-700"
             }`}
           >

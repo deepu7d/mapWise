@@ -21,7 +21,7 @@ export default function TabLayout() {
   if (!sessionData) {
     console.log("Loading session data...");
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 items-center justify-center">
         <Text className="text-2xl font-bold">Loading...</Text>
       </View>
     );

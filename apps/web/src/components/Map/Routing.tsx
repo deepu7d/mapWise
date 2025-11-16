@@ -35,7 +35,7 @@ export default function LibreRouting({ user, index }: RoutingProps) {
   const [fullPath, setFullPath] = useState<Position[]>([]);
   const [visiblePath, setVisiblePath] = useState<Position[]>([]);
   const [initialRouteStats, setInitialRouteStats] = useState<RouteStats | null>(
-    null
+    null,
   );
 
   const userColor = usersColor[index % usersColor.length].hex;
@@ -61,7 +61,7 @@ export default function LibreRouting({ user, index }: RoutingProps) {
       if (data.routes && data.routes.length > 0) {
         const routeData = data.routes[0];
         const coordinates = routeData.geometry.coordinates.map(
-          (coord: [number, number]) => [coord[0], coord[1]] as [number, number]
+          (coord: [number, number]) => [coord[0], coord[1]] as [number, number],
         );
         setFullPath(coordinates);
         setVisiblePath(coordinates);
@@ -103,7 +103,7 @@ export default function LibreRouting({ user, index }: RoutingProps) {
         // Here we calculate distance between two points on the path, both are [lon, lat]
         newRemainingDistance += haversineDistance(
           [remainingPath[i][1], remainingPath[i][0]], // Convert to [lat, lon] for our function
-          remainingPath[i + 1]
+          remainingPath[i + 1],
         );
       }
     }

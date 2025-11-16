@@ -25,36 +25,36 @@ const features = [
 
 export default function HomePage() {
   return (
-    <main className="text-neutral-800 absolute inset-0 h-full max-w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_2px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:64px_64px] overflow-x-hidden">
-      <div className="flex justify-between items-center p-4 lg:px-10">
+    <main className="absolute inset-0 h-full max-w-full overflow-x-hidden bg-[linear-gradient(to_right,#80808012_1px,transparent_2px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:64px_64px] text-neutral-800">
+      <div className="flex items-center justify-between p-4 lg:px-10">
         <h1 className="text-3xl font-bold ">MapWise</h1>
         <Link href={"/form?admin=false"}>
-          <button className="bg-green-400 text-white p-2 px-4 rounded-2xl shadow-md  cursor-pointer hover:bg-green-500 transition-colors duration-300">
+          <button className="cursor-pointer rounded-2xl bg-green-400 p-2 px-4 text-white  shadow-md transition-colors duration-300 hover:bg-green-500">
             Join Room
           </button>
         </Link>
       </div>
       {/* main content wrapper */}
-      <div className="max-w-7xl mx-auto flex flex-col gap-20 justify-center items-center px-4 py-5">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-20 px-4 py-5">
         {/* Hero Section-1 */}
-        <div className="flex flex-col justify-center items-center gap-4 max-w-5xl">
-          <h3 className="text-5xl lg:text-7xl font-semibold text-center pt-5 inline-block bg-gradient-to-r from-neutral-600 to-neutral-950 text-transparent bg-clip-text">
+        <div className="flex max-w-5xl flex-col items-center justify-center gap-4">
+          <h3 className="inline-block bg-gradient-to-r from-neutral-600 to-neutral-950 bg-clip-text pt-5 text-center text-5xl font-semibold text-transparent lg:text-7xl">
             {'The End of "I\'m 5 Minutes Away."'}
           </h3>
-          <p className="text-md lg:text-xl text-center text-neutral-700">
+          <p className="text-md text-center text-neutral-700 lg:text-xl">
             {
               "Coordinate meetups with perfect clarity. No more guesswork, no more waiting."
             }
           </p>
-          <div className="flex flex-col lg:flex-row gap-5 text-lg lg:text-xl lg:pt-10">
+          <div className="flex flex-col gap-5 text-lg lg:flex-row lg:pt-10 lg:text-xl">
             <Link href="/form?admin=true">
-              <button className="bg-blue-500 text-white w-52 py-4 shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:bg-blue-600 transition-colors duration-300">
+              <button className="flex w-52 cursor-pointer items-center justify-center gap-2 bg-blue-500 py-4 text-white shadow-lg transition-colors duration-300 hover:bg-blue-600">
                 <FaPlus />
                 Create Room
               </button>
             </Link>
           </div>
-          <div className="flex items-center gap-2 text-md text-neutral-500 mt-4">
+          <div className="text-md mt-4 flex items-center gap-2 text-neutral-500">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -74,7 +74,7 @@ export default function HomePage() {
           </div>
         </div>
         {/* hero section-2 */}
-        <div className="relative group w-full max-w-sm flex items-center justify-center">
+        <div className="group relative flex w-full max-w-sm items-center justify-center">
           {/* Left Image (Behind) */}
           <Image
             width={300}
@@ -82,12 +82,12 @@ export default function HomePage() {
             src="/video-cover/left.jpeg"
             alt="Preview 1"
             className="
-      absolute w-full h-full object-cover rounded-2xl
-      transform scale-75 -translate-x-[40%] -rotate-8
-      origin-bottom-left transition-all duration-500 ease-in-out
-      group-hover:scale-90 group-hover:-translate-x-[40%] group-hover:-rotate-8
-      z-10
-       border border-neutral-300 shadow-xl
+      -rotate-8 group-hover:-rotate-8 absolute z-10 h-full
+      w-full origin-bottom-left -translate-x-[40%] scale-75
+      transform rounded-2xl border border-neutral-300
+      object-cover shadow-xl transition-all
+      duration-500
+       ease-in-out group-hover:-translate-x-[40%] group-hover:scale-90
     "
           />
 
@@ -98,21 +98,21 @@ export default function HomePage() {
             src="/video-cover/right.jpeg"
             alt="Preview 2"
             className="
-      absolute w-full h-full object-cover rounded-2xl
-      transform scale-75 translate-x-[40%] rotate-8
-      origin-bottom-right transition-all duration-500 ease-in-out
-      group-hover:scale-90 group-hover:translate-x-[40%] group-hover:rotate-8
-      z-10  border border-neutral-300 shadow-xl
+      rotate-8 group-hover:rotate-8 absolute z-10 h-full
+      w-full origin-bottom-right translate-x-[40%] scale-75
+      transform rounded-2xl border border-neutral-300
+      object-cover shadow-xl transition-all
+      duration-500  ease-in-out group-hover:translate-x-[40%] group-hover:scale-90
     "
           />
 
           {/* Main Video (In Front) */}
           <video
             className="
-      relative w-64 lg:w-sm rounded-2xl 
-      shadow-2xl object-cover
-      transform scale-100 group-hover:scale-105 transition-all duration-500 ease-in-out
-      z-20  border border-neutral-300
+      lg:w-sm relative z-20 w-64 
+      scale-100 transform
+      rounded-2xl border border-neutral-300 object-cover shadow-2xl transition-all
+      duration-500  ease-in-out group-hover:scale-105
     "
             src="/demo/main-demo.mp4"
             autoPlay
@@ -126,15 +126,15 @@ export default function HomePage() {
         </div>
 
         {/* How It Works Section */}
-        <div className="text-center w-full py-16 px-4">
-          <h2 className="text-4xl font-bold mb-4">Get Started in Seconds</h2>
-          <p className="text-neutral-500 text-lg mb-12">
+        <div className="w-full px-4 py-16 text-center">
+          <h2 className="mb-4 text-4xl font-bold">Get Started in Seconds</h2>
+          <p className="mb-12 text-lg text-neutral-500">
             {"Meet up without the hassle. It's as easy as 1-2-3."}
           </p>
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="grid gap-10 md:grid-cols-3">
             {/* Step 1 */}
             <div className="flex flex-col items-center gap-3">
-              <div className="bg-blue-100 text-blue-500 rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-2xl font-bold text-blue-500">
                 1
               </div>
               <h3 className="text-xl font-semibold">Create a Room</h3>
@@ -144,7 +144,7 @@ export default function HomePage() {
             </div>
             {/* Step 2 */}
             <div className="flex flex-col items-center gap-3">
-              <div className="bg-green-100 text-green-500 rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-2xl font-bold text-green-500">
                 2
               </div>
               <h3 className="text-xl font-semibold">Share the Link</h3>
@@ -155,7 +155,7 @@ export default function HomePage() {
             </div>
             {/* Step 3 */}
             <div className="flex flex-col items-center gap-3">
-              <div className="bg-purple-100 text-purple-500 rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 text-2xl font-bold text-purple-500">
                 3
               </div>
               <h3 className="text-xl font-semibold">Track & Chat</h3>
@@ -172,18 +172,18 @@ export default function HomePage() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className={`flex flex-shrink-0 flex-col lg:flex-row justify-center items-center w-full gap-6 lg:gap-10 py-10 ${index % 2 !== 0 ? "lg:flex-row-reverse" : ""}`}
+              className={`flex w-full flex-shrink-0 flex-col items-center justify-center gap-6 py-10 lg:flex-row lg:gap-10 ${index % 2 !== 0 ? "lg:flex-row-reverse" : ""}`}
             >
               <Image
                 width={300}
                 height={300}
                 src={feature.imageUrl}
                 alt={`${feature.title} Image`}
-                className="lg:w-xs object-cover rounded-2xl border border-neutral-300 shadow-xl"
+                className="lg:w-xs rounded-2xl border border-neutral-300 object-cover shadow-xl"
               />
-              <div className="flex flex-col justify-center items-center gap-2 max-w-xs">
+              <div className="flex max-w-xs flex-col items-center justify-center gap-2">
                 <h1 className="text-2xl font-bold ">{feature.title}</h1>
-                <p className="text-neutral-500 text-lg text-center">
+                <p className="text-center text-lg text-neutral-500">
                   {feature.description}
                 </p>
               </div>
@@ -192,7 +192,7 @@ export default function HomePage() {
         </div>
       </div>
       <footer>
-        <div className="h-[10vh] flex justify-center items-center p-4 lg:px-10 border-t border-neutral-800">
+        <div className="flex h-[10vh] items-center justify-center border-t border-neutral-800 p-4 lg:px-10">
           <h1 className="text-sm text-neutral-500">
             &copy; 2025 MapWise. All rights reserved.
           </h1>
