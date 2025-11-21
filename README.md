@@ -1,135 +1,130 @@
-# Turborepo starter
+# MapWise
 
-This Turborepo starter is maintained by the Turborepo core team.
+> Real-time meetups with shared maps, live ETAs, and a built-in group chat—no logins required.
 
-## Using this example
+MapWise is a cross-platform coordination tool for friend groups and teams who need to meet in the real world. One person creates a “room,” picks a destination, and shares a link. Everyone who joins is placed on a shared map with live routing, arrival transparency, and contextual chat so there is never another “I’m five minutes away” mystery.
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest
-```
+## Feature Highlights
 
-## What's inside?
+- Live shared map built with MapLibre and Expo—watch every participant move toward the meetup spot in real time.
+- Automatic routing + ETA tracking powered by the public OSRM API and Prisma-backed persistence.
+- Integrated chat so the logistics conversation stays inside the map view.
+- Zero-login join links: anyone with the URL can hop in from web or mobile with a name and location permission.
+- Presence-aware rooms: socket-powered status indicators show who’s online and when someone disconnects.
 
-This Turborepo includes the following packages/apps:
+---
 
-### Apps and Packages
+## Architecture at a Glance
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+The repo is organized as a Turborepo monorepo with dedicated apps for every audience and shared packages for types, state, and hooks.
 
 ```
-cd my-turborepo
+apps/web (Next.js) ─┐
+apps/mobile (Expo RN) ├─> packages/* (types, hooks, store, eslint, tsconfig)
+apps/server (Express + Socket.io + Prisma) ┘
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+PostgreSQL (rooms, users, messages, routeData JSON)
+└─> Socket.io fan-out: room events, location updates, chat stream
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+- **Web (`apps/web`)** – Marketing site + lightweight desktop join/create flow driven by Next.js 15, Tailwind, and interactive hero sections with demo video.
+- **Mobile (`apps/mobile`)** – Expo Router app using MapLibre for rendering multi-user polylines, NativeWind for styling, and shared hooks/state for session management.
+- **Server (`apps/server`)** – Express API plus Socket.io gateway. Prisma persists rooms, users, live location, and messages in PostgreSQL while route data is cached as JSON blobs.
+- **Shared packages** – `@repo/types` (TypeScript contracts for sockets, Prisma DTOs), `@repo/store` (Redux Toolkit slices + providers), `@repo/hooks` (session/socket hooks reused on web + mobile), and tooling packages (`eslint-config`, `typescript-config`).
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+---
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## Tech Stack
 
-### Develop
+- **Frontend**: Next.js 15, React 19, Tailwind CSS, Expo Router, MapLibre GL, NativeWind.
+- **Backend**: Node 20+, Express 5, Socket.io 4, Prisma 6, PostgreSQL, OSRM routing API.
+- **Tooling**: Turborepo, pnpm workspaces, TypeScript everywhere, Zod, Redux Toolkit, PM2/Nginx-ready docker assets.
 
-To develop all apps and packages, run the following command:
+---
 
-```
-cd my-turborepo
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+### App Overview
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+![Web experience placeholder](assets/image.png)
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+![Mobile map placeholder](assets/user.png)
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+![Chat overlay placeholder](assets/chat.png)
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+---
 
-### Remote Caching
+## Getting Started Locally
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### 1. Prerequisites
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+- Node 18+ and pnpm 9 (`corepack enable` recommended)
+- PostgreSQL instance (Docker works great)
+- Expo Go or a dev client for running the mobile app
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+### 2. Install dependencies
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```bash
+pnpm install
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### 3. Configure environment variables
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+Create `apps/server/.env`:
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mapwise
+PORT=4000
 ```
 
-## Useful Links
+Run Prisma migrations to set up the schema:
 
-Learn more about the power of Turborepo:
+```bash
+cd apps/server
+pnpm prisma migrate deploy
+```
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+### 4. Start the backend API + socket gateway
+
+```bash
+pnpm dev --filter=server
+```
+
+The server exposes REST at `http://localhost:4000/api/*` and Socket.io on the same origin.
+
+### 5. Start the marketing web app
+
+```bash
+pnpm dev --filter=web
+```
+
+Visit `http://localhost:3000` to create/share rooms from the browser.
+
+### 6. Start the Expo app
+
+```bash
+pnpm dev --filter=mobile
+```
+
+Use the Expo CLI output to open on iOS, Android, or web. The app consumes the same API + sockets; set `EXPO_PUBLIC_API_URL` if you point at a remote backend.
+
+---
+
+## API & Realtime Surface
+
+- `POST /api/room/create-room` – Create a room, persist destination, create the host user, and prefetch OSRM route data.
+- `POST /api/room/join/:roomId` – Join an existing room and backfill the route from the user’s position to the destination.
+- `GET /api/users/:roomId` – Fetch everyone currently assigned to a room (used for reconnections).
+- `GET /api/messages/:roomId` – Room history hydrator for chat transcripts.
+
+Realtime events (Socket.io):
+
+- `joinRoom` / `disconnect` – Track room membership, online status, and last-known position.
+- `update-location` → `location-update` – Broadcast latitude/longitude deltas to everyone else.
+- `send-message` → `new-message` – Persist chat entries before fan-out to the room.
+- `currentUsers`, `current-messages`, `newUser`, `user-disconnected` – Bootstrap payloads the moment a socket connects.
+
+---
+
+Thanks for taking a look! You are share your feedback here :- https://mystery-lnk.vercel.app/u/deepanshu.
