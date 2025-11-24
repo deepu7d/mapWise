@@ -24,8 +24,8 @@ export function SocketProvider({
   children: React.ReactNode;
   sessionData: any;
   apiBaseUrl: string;
-  userOnlineToast: ({ newUser }: { newUser: User }) => void;
-  userOfflineToast: ({ username }: { username: string }) => void;
+  userOnlineToast?: ({ newUser }: { newUser: User }) => void;
+  userOfflineToast?: ({ username }: { username: string }) => void;
 }) {
   const socket = useSocket(apiBaseUrl || "");
   const isConnected = useJoinRoom(socket, sessionData);
