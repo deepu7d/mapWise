@@ -27,11 +27,13 @@ export default function TabLayout() {
     );
   }
 
+  console.log("env:", process.env.EXPO_PUBLIC_API_BASE_URL);
+
   return (
     <StoreProvider>
       <SocketProvider
         sessionData={sessionData}
-        apiBaseUrl="https://bfxz3hqs-8000.inc1.devtunnels.ms"
+        apiBaseUrl={process.env.EXPO_PUBLIC_API_BASE_URL || ""}
       >
         <Tabs
           screenOptions={{
