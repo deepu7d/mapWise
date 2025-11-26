@@ -140,9 +140,12 @@ export default function Map() {
               zoomLevel: 15,
             }}
           />
-          {/* <MarkerView coordinate={AMBALA_COORDS}>
-        <View className="w-5 h-5 bg-blue-500 border rounded-xl border-red-950" />
-      </MarkerView> */}
+          <PointAnnotation
+            id="destination"
+            coordinate={sessionData.destinationPosition.reverse()}
+          >
+            <Callout title="Destination" />
+          </PointAnnotation>
           {/* <UserLocation visible={true} showsUserHeadingIndicator={true} /> */}
           {users.map((user, index) => (
             <Fragment key={user.id}>
